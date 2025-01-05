@@ -2,6 +2,9 @@
 
 Graph-based live audio manipulation engine implemented in Python
 
+> [!NOTE]
+> For the frontend web interface to interact with Synchrotron, go to [SynchrotronUI](https://synchrotron.thatother.dev) ([GitHub](https://github.com/ThatOtherAndrew/SynchrotronUI/)).
+
 ---
 
 ## What is it?
