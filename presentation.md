@@ -225,7 +225,7 @@ The humble headphone jack
 <!-- speaker_note: "Cons:" -->
 <!-- speaker_note: "  analogue signals need analogue hardware (or DACs)" -->
 <!-- speaker_note: "  example of modular synthesiser shown" -->
-![bleh](assets/modular_synth.jpg)
+![](assets/modular_synth.jpg)
 <!-- font_size: 1 -->
 <!-- alignment: center -->
 <span style="color: #aaaaaa">djhughman from Portland, OR, USA, CC BY 2.0</span>
@@ -234,3 +234,66 @@ The humble headphone jack
 
 Let's get digital
 =================
+<!-- pause -->
+
+![image:w:50%](assets/sample_rate.png)
+<!-- font_size: 1 -->
+<!-- alignment: center -->
+<span style="color: #aaaaaa">FLOSS Manuals, GNU GPLv2</span>
+
+**TODO**
+
+Let's make a sine wave!
+=======================
+
+```python {1|1-3|5|5-6|5-8|all}
+class SineNode(Node):
+    frequency: StreamInput
+    out: StreamOutput
+
+    def render(self, ctx: RenderContext) -> None:
+        waveform = np.empty(shape=ctx.buffer_size, dtype=np.float32)
+
+        self.out.write(waveform)
+```
+
+Let's make a sine wave!
+=======================
+
+```python {1-3,9-13|5-6|7|all}
+class SineNode(Node):
+    frequency: StreamInput
+    out: StreamOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str) -> None:
+        super().__init__(synchrotron, name)
+        self.phase = 0.
+
+    def render(self, ctx: RenderContext) -> None:
+        waveform = np.empty(shape=ctx.buffer_size, dtype=np.float32)
+
+        self.out.write(waveform)
+```
+
+Let's make a sine wave!
+=======================
+
+```python {1-9,11,17|2,10|13-14|13-15|all}
+class SineNode(Node):
+    frequency: StreamInput
+    out: StreamOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str) -> None:
+        super().__init__(synchrotron, name)
+        self.phase = 0.
+
+    def render(self, ctx: RenderContext) -> None:
+        frequency = self.frequency.read(ctx)
+        waveform = np.empty(shape=ctx.buffer_size, dtype=np.float32)
+
+        for i in range(ctx.buffer_size):
+            waveform[i] = np.sin(self.phase)
+            self.phase += 2 * np.pi * frequency[i] / ctx.sample_rate
+
+        self.out.write(waveform)
+```
