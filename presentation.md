@@ -21,6 +21,9 @@ theme:
       left: "{author}"
       center: "{title}"
       right: "{event}"
+    headings:
+      h1:
+        font_size: 2
 ---
 
 Introducing variables
@@ -97,7 +100,7 @@ traffic_light = TrafficLightState.YELLOW
 print('The traffic light is', traffic_light.value)
 sleep(1)
 traffic_light = TrafficLightState.RED
-print('The traffic light is ', traffic_light.value)
+print('The traffic light is', traffic_light.value)
 sleep(1)
 ```
 
@@ -148,7 +151,86 @@ So what's the big deal?
 <!-- speaker_note: Simple idea unlocks a lot of potential when it comes to live data -->
 
 <!-- pause -->
-<!-- new_lines: 10 -->
-<!-- font_size: 2 -->
+<!-- new_lines: 2 -->
 <!-- alignment: center -->
-Stream processing
+# Stream processing!
+
+<!-- pause -->
+<!-- new_lines: 4 -->
+<!-- column_layout: [1, 1] -->
+<!-- alignment: left -->
+<!-- font_size: 2 -->
+
+<!-- column: 0 -->
+## A favourite amongst:
+
+<!-- speaker_note: Finance firms, working with stock market data in real-time -->
+<!-- speaker_note: Meteorologists, predicting the weather -->
+<!-- speaker_note: Roboticists, for reacting to sensor data, e.g. self-driving cars -->
+<!-- speaker_note: Statisticians, for trends, analytics, all sorts of data science, applications from load balancing to fraud detection -->
+<!-- speaker_note: And of course, audio engineers and musicians! -->
+- Finance firms
+- Meteorologists
+- Roboticists
+- Statisticians
+- `Audio engineers!`
+
+<!-- column: 1 -->
+
+## Used in music for:
+
+- **Synthesisers**
+  - <span style="color: #aaaaaa">*Data* --> *Audio*</span>
+- **Effects**
+  - <span style="color: #aaaaaa">*Audio* --> *Audio*</span>
+- **Audio interfaces**
+  - <span style="color: #aaaaaa">*Data* <-> *Audio*</span>
+- **Instruments, microphones, mixers, recorders, speakers...**
+  - <span style="color: #aaaaaa">*???* <==> *???*</span>
+
+The humble headphone jack
+=========================
+
+<!-- alignment: center -->
+(a.k.a. audio jack, phone connector, aux port, ...)
+
+<!-- speaker_note: You've done stream processing (indirectly) if you've ever used a headphone jack before -->
+<!-- speaker_note: Super simple, just direct bare metal connection between two ports -->
+<!-- speaker_note: Comes in different sizes (3.5mm, 1/4 inch) -->
+<!-- speaker_note: "\n" -->
+
+<!-- new_lines: 4 -->
+<!-- column_layout: [1, 1] -->
+<!-- alignment: left -->
+<!-- font_size: 2 -->
+
+<!-- column: 0 -->
+<!-- speaker_note: "Pros:" -->
+<!-- speaker_note: "  Zero latency, excluding speed of electricity" -->
+<!-- speaker_note: "  No protocol, as long as you don't blow anything up" -->
+<!-- speaker_note: "  Infinite resolution, if your measuring equipment is precise enough" -->
+## Pros:
+- zero latency
+  - <span style="color: #aaaaaa">*(sort of)*</span>
+- no protocol
+  - <span style="color: #aaaaaa">*(sort of)*</span>
+- infinite resolution
+  - <span style="color: #aaaaaa">*(sort of)*</span>
+
+<!-- column: 1 -->
+## Cons:
+
+<!-- pause -->
+
+<!-- speaker_note: "Cons:" -->
+<!-- speaker_note: "  analogue signals need analogue hardware (or DACs)" -->
+<!-- speaker_note: "  example of modular synthesiser shown" -->
+![bleh](assets/modular_synth.jpg)
+<!-- font_size: 1 -->
+<!-- alignment: center -->
+<span style="color: #aaaaaa">djhughman from Portland, OR, USA, CC BY 2.0</span>
+
+<!-- speaker_note: "\nSo how can we digitise this?" -->
+
+Let's get digital
+=================
