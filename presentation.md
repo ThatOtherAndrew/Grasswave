@@ -29,8 +29,6 @@ theme:
 Introducing variables
 =====================
 
-<!-- speaker_note: Let's talk about variables -->
-
 <!-- pause -->
 
 <!-- speaker_note: Imagine modelling traffic light system -->
@@ -199,7 +197,7 @@ The humble headphone jack
 <!-- speaker_note: Comes in different sizes (3.5mm, 1/4 inch) -->
 <!-- speaker_note: "\n" -->
 
-<!-- new_lines: 4 -->
+<!-- new_lines: 2 -->
 <!-- column_layout: [1, 1] -->
 <!-- alignment: left -->
 <!-- font_size: 2 -->
@@ -236,15 +234,40 @@ Let's get digital
 =================
 <!-- pause -->
 
+<!-- speaker_note: We have to go from an analogue, infinite-resolution signal (vector graphics analogy) -->
+![image:w:70%](assets/waveform.png)
+<!-- alignment: center -->
+<span style="color: #aaaaaa">Amitchell125, CC BY-SA 4.0</span>
+
+<!-- new_lines: 2 -->
+
+<!-- speaker_note: To a digital representation as an array of data points (bitmap graphics analogy) -->
+![image:w:70%](assets/audacity_samples.png)
+<!-- alignment: center -->
+<span style="color: #aaaaaa">Audacity Manual, CC BY 3.0</span>
+
+Sample rate
+===========
+
+<!-- speaker_note: Bitmap images have resolution, sample rate is digital audio equivalent -->
+
 ![image:w:50%](assets/sample_rate.png)
 <!-- font_size: 1 -->
 <!-- alignment: center -->
 <span style="color: #aaaaaa">FLOSS Manuals, GNU GPLv2</span>
 
+<!-- speaker_note: Standard sample rate is 44.1 KHz, because of Nyquist-Shannon sampling theorem -->
+<!-- speaker_note: Reconstruction filters in DACs used to smooth out the signal during playback -->
+<!-- speaker_note: Still are benefits to high sample rate during processing -->
+<!-- speaker_note: However, computer suck at consistency with high frequency loops -->
+
+Buffer size
+===========
+
 **TODO**
 
-Let's make a sine wave!
-=======================
+Let's make a sine wave
+======================
 
 ```python {1|1-3|5|5-6|5-8|all}
 class SineNode(Node):
@@ -257,8 +280,8 @@ class SineNode(Node):
         self.out.write(waveform)
 ```
 
-Let's make a sine wave!
-=======================
+Let's make a sine wave
+======================
 
 ```python {1-3,9-13|5-6|7|all}
 class SineNode(Node):
@@ -275,8 +298,8 @@ class SineNode(Node):
         self.out.write(waveform)
 ```
 
-Let's make a sine wave!
-=======================
+Let's make a sine wave
+======================
 
 ```python {1-9,11,17|2,10|13-14|13-15|all}
 class SineNode(Node):
@@ -297,3 +320,27 @@ class SineNode(Node):
 
         self.out.write(waveform)
 ```
+
+<!-- end_slide -->
+<!-- jump_to_middle -->
+<!-- font_size: 4 -->
+See it in action!
+=================
+
+That's all, folks!
+==================
+
+<!-- column_layout: [1, 1] -->
+<!-- font_size: 2 -->
+
+<!-- column: 0 -->
+# Contact me
+![image:w:70%](assets/qr_thatother_dev.png)
+<!-- alignment: center -->
+thatother.dev
+
+<!-- column: 1 -->
+# Try Synchrotron
+![image:w:70%](assets/qr_synchrotron.png)
+<!-- alignment: center -->
+git.new/sync
