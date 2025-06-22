@@ -1,12 +1,12 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  packages = [
-    pkgs.mermaid-cli
-    pkgs.presenterm
-    pkgs.typst
+  packages = with pkgs; [
+    mermaid-cli
+    presenterm
+    typst
 
-    (pkgs.python312.withPackages (pypkgs: with pypkgs; [
+    (python312.withPackages (pypkgs: with pypkgs; [
       aiohttp
       fastapi
       lark
