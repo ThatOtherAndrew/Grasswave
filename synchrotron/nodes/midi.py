@@ -10,7 +10,7 @@ from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, R
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['MidiInputNode', 'MidiTriggerNode', 'MidiTranspositionNode', 'MonophonicRenderNode']
+__all__ = ['MidiInputNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode']
 
 
 class MidiInputNode(Node):
@@ -66,7 +66,7 @@ class MidiTriggerNode(Node):
         self.trigger.write(output)
 
 
-class MidiTranspositionNode(Node):
+class MidiTransposeNode(Node):
     midi: MidiInput
     transposition: StreamInput
     out: MidiOutput
