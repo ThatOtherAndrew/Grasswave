@@ -105,8 +105,6 @@ class ClockNode(Node):
                 output[i] = True
                 self.count %= period
 
-        # noinspection PyTypeChecker
-        # TODO: hopefully can fix soon:tm:
         self.out.write(output)
 
 
