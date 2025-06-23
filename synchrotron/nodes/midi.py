@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import numpy as np
+# noinspection PyUnresolvedReferences
 from rtmidi import MidiIn
 
 from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, RenderContext, StreamInput, StreamOutput
@@ -61,8 +62,6 @@ class MidiTriggerNode(Node):
             if any(msg[0] & MidiMessage.OPCODE_MASK == MidiMessage.NOTE_ON for msg in messages):
                 output[i] = True
 
-        # noinspection PyTypeChecker
-        # again, typing here needs fixing somehow
         self.trigger.write(output)
 
 
@@ -79,7 +78,7 @@ class MidiTransposeNode(Node):
             for message in self.midi.buffer.get_messages_at_pos(i):
                 if message[0] & MidiMessage.OPCODE_MASK in (MidiMessage.NOTE_ON, MidiMessage.NOTE_OFF):
                     transposed = bytearray(message)
-                    transposed[1] += transposition[i]
+                    transposed[1] += round(transposition[i])
                     output.add_message(position=i, message=bytes(transposed))
 
         self.out.write(output)
