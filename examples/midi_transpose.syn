@@ -1,0 +1,25 @@
+/***
+{"_uzmsc":{"x":-360.4176560614858,"y":203.01230652162528},"_gffia":{"x":-151.217014373419,"y":195.5218961094847},"_peqjo":{"x":517.4397114040129,"y":504.27882888348},"_drxcl":{"x":713.9518558799687,"y":575.8409722791313},"_dcywl":{"x":906.6341022880878,"y":492.79773862231605},"_kzoef":{"x":556.4769034101694,"y":313.6506182857318},"_iktbf":{"x":30.353285640554688,"y":332.1998483994041},"_opzzz":{"x":23.608111053764745,"y":440.12264178804304},"_hwekw":{"x":231.0222295975551,"y":387.847538740421},"_zubgz":{"x":-214.15929313058038,"y":332.19984839940406}}
+***/
+
+new 1 _uzmsc;
+new MidiInputNode _gffia;
+new MonophonicRenderNode _peqjo;
+new SineNode _drxcl;
+new PlaybackNode _dcywl;
+new MidiTransposeNode _kzoef;
+new SineNode _iktbf;
+new 12 _opzzz;
+new MultiplyNode _hwekw;
+new 0.1 _zubgz;
+
+link _uzmsc.out -> _gffia.port;
+link _drxcl.out -> _dcywl.left;
+link _drxcl.out -> _dcywl.right;
+link _peqjo.frequency -> _drxcl.frequency;
+link _gffia.out -> _kzoef.midi;
+link _kzoef.out -> _peqjo.midi;
+link _iktbf.out -> _hwekw.a;
+link _opzzz.out -> _hwekw.b;
+link _hwekw.out -> _kzoef.transposition;
+link _zubgz.out -> _iktbf.frequency;
