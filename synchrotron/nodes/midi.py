@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 import tinysoundfont
 import tinysoundfont.midi
+from numpy.f2py.auxfuncs import isintent_aux
 # noinspection PyUnresolvedReferences
 from rtmidi import MidiIn
 
@@ -115,25 +117,62 @@ class MonophonicRenderNode(Node):
 class SoundFontNode(Node):
     path: DataInput
     midi: MidiInput
+    bank: DataInput
+    preset: DataInput
     left: StreamOutput
     right: StreamOutput
 
     def __init__(self, synchrotron: Synchrotron, name: str):
         super().__init__(synchrotron, name)
-        self.current_path = None
-        self.sfid = None
+        self._sfid = None
+        self._current_path = None
+        self._current_bank = None
+        self._current_preset = None
         self.synth = tinysoundfont.Synth()
         self.sequencer = tinysoundfont.Sequencer(self.synth)
 
+    def get_bank(self) -> int:
+        raw_value = self.bank.read()
+        if raw_value is None:
+            return 0
+        return np.clip(round(raw_value), 0, 127)
+
+    def get_preset(self) -> int:
+        raw_value = self.preset.read()
+        if raw_value is None:
+            return 0
+        return np.clip(round(raw_value), 0, 127)
+
+    def load_soundfont(self, path: str | None) -> None:
+        if self._sfid is not None:
+            self.synth.sfunload(self._sfid)
+        if path is not None:
+            self._sfid = self.synth.sfload(path)
+
+        self._current_path = path
+
+    def load_bank(self, bank: int, preset: int = 0) -> None:
+        self.synth.program_select(0, self._sfid, bank, preset)
+
+        self._current_bank = bank
+        self._current_preset = preset
+        self.exports['Preset'] = self.synth.sfpreset_name(self._sfid, bank, preset)
+
+    def load_preset(self, preset: int) -> None:
+        self.synth.program_change(0, preset)
+
+        self._current_preset = preset
+        self.exports['Preset'] = self.synth.sfpreset_name(self._sfid, self._current_bank, preset)
+
+
     def render(self, ctx: RenderContext) -> None:
-        if (new_path := self.path.read()) != self.current_path:
-            self.current_path = new_path
-            if self.sfid is not None:
-                self.synth.sfunload(self.sfid)
-            if self.current_path is not None:
-                self.sfid = self.synth.sfload(self.current_path)
-                self.synth.program_select(0, self.sfid, 0, 0)
-                print('Loaded', self.synth.sfpreset_name(self.sfid, 0, 0))
+        if (new_path := self.path.read(default=Path())) != self._current_path:
+            self.load_soundfont(new_path)
+            self.load_bank(self.get_bank(), self.get_preset())
+        elif (new_bank := self.get_bank()) != self._current_bank:
+            self.load_bank(new_bank, self.get_preset())
+        elif (new_preset := self.get_preset()) != self._current_preset:
+            self.load_preset(new_preset)
 
         events = []
 
@@ -153,7 +192,7 @@ class SoundFontNode(Node):
                     action=action,
                     t=self.sequencer.time + (pos / ctx.sample_rate),
                     channel=0,
-                    persistent=False
+                    persistent=False,
                 ))
 
         self.sequencer.add(events)
