@@ -167,7 +167,7 @@ class Synchrotron:
         script = ''
         for node in self.nodes:
             # noinspection PyUnresolvedReferences
-            script += f'new {node.value if isinstance(node, DataNode) else node.__class__.__name__} {node.name};\n'
+            script += f'new {repr(node.value) if isinstance(node, DataNode) else node.__class__.__name__} {node.name};\n'
         script += '\n'
         for connection in self.connections:
             script += f'link {connection.source.instance_name} -> {connection.sink.instance_name};\n'

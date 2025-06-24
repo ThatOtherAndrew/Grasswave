@@ -15,10 +15,10 @@ __all__ = ['DataNode', 'StreamNode']
 class DataNode(Node):
     out: DataOutput
 
-    def __init__(self, synchrotron: Synchrotron, name: str, value: float) -> None:
+    def __init__(self, synchrotron: Synchrotron, name: str, value) -> None:
         super().__init__(synchrotron, name)
         self.value = value
-        self.exports['Value'] = value
+        self.exports['Value'] = repr(value)
 
     def render(self, _: RenderContext) -> None:
         self.out.write(self.value)
