@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 import numpy as np
 import tinysoundfont
 import tinysoundfont.midi
-from numpy.f2py.auxfuncs import isintent_aux
 # noinspection PyUnresolvedReferences
 from rtmidi import MidiIn
 
@@ -143,19 +142,25 @@ class SoundFontNode(Node):
             return 0
         return np.clip(round(raw_value), 0, 127)
 
-    def load_soundfont(self, path: str | None) -> None:
+    def load_soundfont(self, path: Path | str) -> None:
         if self._sfid is not None:
             self.synth.sfunload(self._sfid)
-        if path is not None:
-            self._sfid = self.synth.sfload(path)
 
         self._current_path = path
+        path = Path(path)
+        soundfonts_dir_path = Path(__file__).parent / 'soundfonts' / path
+        if soundfonts_dir_path.is_file():
+            path = soundfonts_dir_path
+        self._sfid = self.synth.sfload(path.resolve().as_posix())
+
+        self.exports['SoundFont'] = path.stem
 
     def load_bank(self, bank: int, preset: int = 0) -> None:
         self.synth.program_select(0, self._sfid, bank, preset)
 
         self._current_bank = bank
         self._current_preset = preset
+        self.exports['Bank'] = bank
         self.exports['Preset'] = self.synth.sfpreset_name(self._sfid, bank, preset)
 
     def load_preset(self, preset: int) -> None:
@@ -166,7 +171,7 @@ class SoundFontNode(Node):
 
 
     def render(self, ctx: RenderContext) -> None:
-        if (new_path := self.path.read(default=Path())) != self._current_path:
+        if (new_path := self.path.read(default='8MBGMSFX.sf2')) != self._current_path:
             self.load_soundfont(new_path)
             self.load_bank(self.get_bank(), self.get_preset())
         elif (new_bank := self.get_bank()) != self._current_bank:
