@@ -29,8 +29,11 @@ class SynchrolangTransformer(lark.Transformer):
 
     int = int
     float = float
-    string = str
     null = NoneType
+
+    @staticmethod
+    def string(token: lark.Token) -> str:
+        return token[1:-1]  # remove quotes
 
     @staticmethod
     def bool(token: lark.Token) -> bool:
