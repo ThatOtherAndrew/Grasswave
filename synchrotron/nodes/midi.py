@@ -115,7 +115,8 @@ class MonophonicRenderNode(Node):
 class SoundFontNode(Node):
     path: DataInput
     midi: MidiInput
-    out: StreamOutput
+    left: StreamOutput
+    right: StreamOutput
 
     def __init__(self, synchrotron: Synchrotron, name: str):
         super().__init__(synchrotron, name)
@@ -142,10 +143,8 @@ class SoundFontNode(Node):
                 opcode = message[0] & MidiMessage.OPCODE_MASK
 
                 if opcode == MidiMessage.NOTE_ON:
-                    print(f'Note on: {int(message[1])} (velocity {int(message[2])})')
                     action = tinysoundfont.midi.NoteOn(message[1], message[2])
                 elif opcode == MidiMessage.NOTE_OFF:
-                    print(f'Note off: {int(message[1])} (velocity {int(message[2])})')
                     action = tinysoundfont.midi.NoteOff(message[1])
                 else:
                     continue
@@ -160,6 +159,7 @@ class SoundFontNode(Node):
         self.sequencer.add(events)
         self.sequencer.process(ctx.buffer_size / ctx.sample_rate)
         raw_buffer = self.synth.generate(ctx.buffer_size)
-        buffer = np.asarray(raw_buffer, dtype=np.float32)
+        interleaved_buffer = np.frombuffer(raw_buffer.cast('f'), dtype=np.float32)
 
-        self.out.write(buffer)
+        self.left.write(interleaved_buffer[0::2])
+        self.right.write(interleaved_buffer[1::2])
