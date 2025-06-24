@@ -4,12 +4,7 @@ let
   python = pkgs.python312;
   buildInputs = with pkgs; [
     stdenv.cc.cc
-
     portaudio
-
-    # sf2_loader
-    glib
-    fluidsynth
   ];
 in
   pkgs.mkShell {

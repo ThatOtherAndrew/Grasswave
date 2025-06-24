@@ -46,9 +46,9 @@ dependencies = [
   "numpy>=2.3.1",
   "pyaudio>=0.2.14",
   "python-rtmidi>=1.5.8",
-  "sf2-loader>=1.25",
   "soundfile>=0.13.1",
   "textual>=3.5.0",
+  "tinysoundfont>=0.3.7",
   "typer>=0.16.0",
   "uvicorn>=0.34.3",
 ]

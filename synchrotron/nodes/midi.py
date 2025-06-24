@@ -3,9 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import numpy as np
+import tinysoundfont
+import tinysoundfont.midi
 # noinspection PyUnresolvedReferences
 from rtmidi import MidiIn
-from sf2_loader import sf2_loader
 
 from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, RenderContext, StreamInput, StreamOutput
 
@@ -118,16 +119,47 @@ class SoundFontNode(Node):
 
     def __init__(self, synchrotron: Synchrotron, name: str):
         super().__init__(synchrotron, name)
-        self.current_path = self.path.read()
-        self.loader = sf2_loader('/home/andromeda/Downloads/SM64.sf2')
-        self.loader.unload(1)
+        self.current_path = None
+        self.sfid = None
+        self.synth = tinysoundfont.Synth()
+        self.sequencer = tinysoundfont.Sequencer(self.synth)
 
     def render(self, ctx: RenderContext) -> None:
         if (new_path := self.path.read()) != self.current_path:
             self.current_path = new_path
-            for index in range(1, len(self.loader.sfid_list) + 1):
-                self.loader.unload(index)
+            if self.sfid is not None:
+                self.synth.sfunload(self.sfid)
             if self.current_path is not None:
-                self.loader.load(self.current_path)
+                self.sfid = self.synth.sfload(self.current_path)
+                self.synth.program_select(0, self.sfid, 0, 0)
+                print('Loaded', self.synth.sfpreset_name(self.sfid, 0, 0))
 
-# new "/home/andromeda/Downloads/SM64.sf2" sf2_path; new SoundFontNode renderer; link sf2_path.out -> renderer.path
+        events = []
+
+        for pos, messages in self.midi.buffer.data.items():
+
+            for message in messages:
+                opcode = message[0] & MidiMessage.OPCODE_MASK
+
+                if opcode == MidiMessage.NOTE_ON:
+                    print(f'Note on: {int(message[1])} (velocity {int(message[2])})')
+                    action = tinysoundfont.midi.NoteOn(message[1], message[2])
+                elif opcode == MidiMessage.NOTE_OFF:
+                    print(f'Note off: {int(message[1])} (velocity {int(message[2])})')
+                    action = tinysoundfont.midi.NoteOff(message[1])
+                else:
+                    continue
+
+                events.append(tinysoundfont.midi.Event(
+                    action=action,
+                    t=self.sequencer.time + (pos / ctx.sample_rate),
+                    channel=0,
+                    persistent=False
+                ))
+
+        self.sequencer.add(events)
+        self.sequencer.process(ctx.buffer_size / ctx.sample_rate)
+        raw_buffer = self.synth.generate(ctx.buffer_size)
+        buffer = np.asarray(raw_buffer, dtype=np.float32)
+
+        self.out.write(buffer)

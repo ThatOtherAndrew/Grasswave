@@ -217,15 +217,6 @@ wheels = [
 ]
 
 [[package]]
-name = "dataclasses"
-version = "0.8"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/1f/12/7919c5d8b9c497f9180db15ea8ead6499812ea8264a6ae18766d93c59fe5/dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97", size = 36581, upload-time = "2020-11-13T14:40:30.139Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/fe/ca/75fac5856ab5cfa51bbbcefa250182e50441074fdc3f803f6e76451fab43/dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf", size = 19041, upload-time = "2020-11-13T14:40:29.194Z" },
-]
-
-[[package]]
 name = "fastapi"
 version = "0.115.13"
 source = { registry = "https://pypi.org/simple" }
@@ -457,12 +448,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mido-fix"
-version = "1.2.12"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/40/10/fbb659e1691077f7159e6350efcecda9f4e2f2eedf4a5ee59869ba2a7038/mido_fix-1.2.12.tar.gz", hash = "sha256:8ce7ad87f847de36c7dd3048876581113c4d83367d1f392e5a7a9f9562b3374e", size = 99443, upload-time = "2022-10-11T03:41:20.359Z" }
-
-[[package]]
 name = "msgpack"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -580,17 +565,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/51/9f/076533feb1b5488d22936da98b9c217205cfbf9f56f7174e8c5c86d86fe6/multidict-6.5.0-cp313-cp313t-win_arm64.whl", hash = "sha256:51d33fafa82640c0217391d4ce895d32b7e84a832b8aee0dcc1b04d8981ec7f4", size = 44358, upload-time = "2025-06-17T14:15:27.117Z" },
     { url = "https://files.pythonhosted.org/packages/44/d8/45e8fc9892a7386d074941429e033adb4640e59ff0780d96a8cf46fe788e/multidict-6.5.0-py3-none-any.whl", hash = "sha256:5634b35f225977605385f56153bd95a7133faffc0ffe12ad26e10517537e8dfc", size = 12181, upload-time = "2025-06-17T14:15:55.156Z" },
 ]
-
-[[package]]
-name = "musicpy"
-version = "7.11"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "dataclasses" },
-    { name = "mido-fix" },
-    { name = "pygame-ce" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/54/d7b227456a9ff94ef93abb5f1ad1dc3e5e72abdb40350c7956d0ba72577f/musicpy-7.11.tar.gz", hash = "sha256:7957971dc1be5b310a83253acd8dd8d3ce803ba47f67d88603904667badde993", size = 116237, upload-time = "2025-02-09T08:48:56.422Z" }
 
 [[package]]
 name = "numpy"
@@ -742,15 +716,6 @@ wheels = [
 ]
 
 [[package]]
-name = "py"
-version = "1.11.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/98/ff/fec109ceb715d2a6b4c4a85a61af3b40c723a961e8828319fbcb15b868dc/py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719", size = 207796, upload-time = "2021-11-04T17:17:01.377Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f6/f0/10642828a8dfb741e5f3fbaac830550a518a775c7fff6f04a007259b0548/py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378", size = 98708, upload-time = "2021-11-04T17:17:00.152Z" },
-]
-
-[[package]]
 name = "pyaudio"
 version = "0.2.14"
 source = { registry = "https://pypi.org/simple" }
@@ -854,44 +819,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pydub"
-version = "0.25.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fe/9a/e6bca0eed82db26562c73b5076539a4a08d3cffd19c3cc5913a3e61145fd/pydub-0.25.1.tar.gz", hash = "sha256:980a33ce9949cab2a569606b65674d748ecbca4f0796887fd6f46173a7b0d30f", size = 38326, upload-time = "2021-03-10T02:09:54.659Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a6/53/d78dc063216e62fc55f6b2eebb447f6a4b0a59f55c8406376f76bf959b08/pydub-0.25.1-py2.py3-none-any.whl", hash = "sha256:65617e33033874b59d87db603aa1ed450633288aefead953b30bded59cb599a6", size = 32327, upload-time = "2021-03-10T02:09:53.503Z" },
-]
-
-[[package]]
-name = "pygame-ce"
-version = "2.5.5"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c9/be/af69521e694442dbde5db29069953f25367ddacaa50d9ae644745853d37c/pygame_ce-2.5.5.tar.gz", hash = "sha256:a7f297c223c6e35f16d65d47a19757005763ea7e90795ccc37c0bc562364ae6b", size = 5821935, upload-time = "2025-06-07T07:33:03.501Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/48/ff/65c13ed5a0ca7c186e054a416f74e1a73ab90e6fc62b8c133e07d1fe321b/pygame_ce-2.5.5-cp311-cp311-macosx_10_11_x86_64.whl", hash = "sha256:7697ca838c560e16a305de47a4ea3ad3152ebc7927b309f4251d5718b38db388", size = 12415712, upload-time = "2025-06-07T07:31:25.624Z" },
-    { url = "https://files.pythonhosted.org/packages/22/17/80c6c64373d7488e5c15f70245093146880574cbb962222f03d30c7bbc4f/pygame_ce-2.5.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:683d91ce985192106014b1cc887f2f6d257f4e2329d49b6942d2cd46f030cc8a", size = 11654443, upload-time = "2025-06-07T07:31:28.212Z" },
-    { url = "https://files.pythonhosted.org/packages/f6/34/adf751a50a85f61f42e80cbad684f74fe0f26cb030f16c04b45392000248/pygame_ce-2.5.5-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:524fbda5e132abfbeda9c296d523bc3adbe9ad33498d04762ff9c7912818c3f2", size = 12304561, upload-time = "2025-06-07T07:31:30.744Z" },
-    { url = "https://files.pythonhosted.org/packages/15/19/1647079f2883454f0a0e532f8e76a784984a77a23bd1a9a6fbffe4746a9e/pygame_ce-2.5.5-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:81ea332ee9c51ccc66cbe73124a13264c303ab842aca093c2f5f2282f55c168c", size = 12835077, upload-time = "2025-06-07T07:31:33.811Z" },
-    { url = "https://files.pythonhosted.org/packages/94/a6/5167c4ab343fe8ef62a360af1dacd585eb57ea42b62eb9339687e998bd39/pygame_ce-2.5.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6d32e970b5f06a8710b098f178693456cc433170a7f94ef451e31d682d1a2f86", size = 12480565, upload-time = "2025-06-07T07:31:36.494Z" },
-    { url = "https://files.pythonhosted.org/packages/d6/27/80e5d042c2be4ec2d1a41f42fd61ed8661cd780343511bd9a8e5edb34548/pygame_ce-2.5.5-cp311-cp311-win32.whl", hash = "sha256:8642add37c09cef881812bfb6e7f7771e7d666f870e5640e473841bf34fd771b", size = 9804082, upload-time = "2025-06-07T07:31:39.095Z" },
-    { url = "https://files.pythonhosted.org/packages/da/fd/dff4d8b02bfda1be6a251747520de5e012fe56355d4fb44d4cae70290efe/pygame_ce-2.5.5-cp311-cp311-win_amd64.whl", hash = "sha256:13d1951bff009b2b1d593785fd43a9be6d3d6de0b1b0c0d85ad7d6e967d31c99", size = 10377304, upload-time = "2025-06-07T07:31:41.739Z" },
-    { url = "https://files.pythonhosted.org/packages/60/2c/45729f86bd7d1b67062be9c44618d7a4269a3892b35d9677e09f3409e91e/pygame_ce-2.5.5-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:cb6801f224a806f883e5de558d3424a53e714abec7d6a47d32fc6b9cfa92e598", size = 12409360, upload-time = "2025-06-07T07:31:44.103Z" },
-    { url = "https://files.pythonhosted.org/packages/6c/28/96d776b0c8efe9939c05ac15ea317b687cec6684ac9808d1c771029e308c/pygame_ce-2.5.5-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:adddaf63af2f5b5d0a3840aa73021b71766fa16c1ed3fc18756b54e90b66592f", size = 11660289, upload-time = "2025-06-07T07:31:46.725Z" },
-    { url = "https://files.pythonhosted.org/packages/24/01/48bad8a2431507efc3b357816cbbd4815bba063f09becd54f8d9c5b04b20/pygame_ce-2.5.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1602ed3dd274e36d5c6008ff2c500223bea38aab0d4fa4a8eae0a0e5897bcb88", size = 12290133, upload-time = "2025-06-07T07:31:49.188Z" },
-    { url = "https://files.pythonhosted.org/packages/ac/5d/0edb786e614bd8d5e2d34a864f0d0ac1ed6b035d7eea04976dbd35bb7e3f/pygame_ce-2.5.5-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:eb42884c847d54a40c98cf631ca8014406eaf8bbfeddde298269193c533a61eb", size = 12823259, upload-time = "2025-06-07T07:31:51.489Z" },
-    { url = "https://files.pythonhosted.org/packages/d5/72/3ae43a335e80f55f3243d674cf47becf17e2a4c565d745b961c50aeec7a1/pygame_ce-2.5.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:13dec639f227dd1092b161e696769f8b6dfbeb92e4e4fabc729dc689a4c63997", size = 12467026, upload-time = "2025-06-07T07:31:53.792Z" },
-    { url = "https://files.pythonhosted.org/packages/0a/30/71e761df3d3567b59f7f73b938c682aaf2e6406d248d871ae5dd569d94e1/pygame_ce-2.5.5-cp312-cp312-win32.whl", hash = "sha256:356ba09a684a92b04330d3d6bb3136066a170aea15f300b078edda347b719fb2", size = 9802023, upload-time = "2025-06-07T07:31:55.983Z" },
-    { url = "https://files.pythonhosted.org/packages/8a/77/adca7896a89d2a30d974bd337ac8adfa14e031f52319c5bfa379be092ade/pygame_ce-2.5.5-cp312-cp312-win_amd64.whl", hash = "sha256:7863dbaf5c33bbba878b6e5aa1b11592048a96b383b11dac15a0837a14c30b62", size = 10378199, upload-time = "2025-06-07T07:31:58.046Z" },
-    { url = "https://files.pythonhosted.org/packages/13/d6/b72511c35d3c3ed07072cee07a1dea34e950375a225d181276c4b2316d3a/pygame_ce-2.5.5-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:32008bef532318c7f8d97fb087a16b44c0d5140969963b6afbf0f9521d18f3dc", size = 12403252, upload-time = "2025-06-07T07:32:00.325Z" },
-    { url = "https://files.pythonhosted.org/packages/5d/0e/23b4ea53172d8841cfaee5b5274581b2b7fa96426e6029dda0e37b369f86/pygame_ce-2.5.5-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:00004956921641d9dc7e628be77ea7f23333b839e48ec981704b6516537bd67f", size = 11654505, upload-time = "2025-06-07T07:32:02.91Z" },
-    { url = "https://files.pythonhosted.org/packages/5c/95/a58928af657fbba391d1691ce66f2afede3e8c65cb021b42e4488f6fd490/pygame_ce-2.5.5-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:255efe334dc69a78c3b7986b9c893ef86cead5aaf8c61cb6990949b4fca84142", size = 12286043, upload-time = "2025-06-07T07:32:05.147Z" },
-    { url = "https://files.pythonhosted.org/packages/5a/61/499b2d078c62c9b91a6ccd2e63805ac884e1715d307d083e54bbbd75a24d/pygame_ce-2.5.5-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c4b90f01d3ae8ae0f84361480531323bbd06e10be75f4e67478b999b43f8a1f9", size = 12821547, upload-time = "2025-06-07T07:32:07.347Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/19/7f9a37b7ff55dc34a8f727b86b89800a1fdb4b1436e601dea66f89764472/pygame_ce-2.5.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e37bfd4545fb057ce24d06e13d1262989ca0ece3b12010c585130607e3c2bbf8", size = 12463330, upload-time = "2025-06-07T07:32:10.136Z" },
-    { url = "https://files.pythonhosted.org/packages/fa/f5/5ad50c34f042bbc135312cd75d86d156bf18f54b72ae8947498acbda8cbd/pygame_ce-2.5.5-cp313-cp313-win32.whl", hash = "sha256:476a1b56b19f5023ddd0512716f11c413c3587b93dfd4aebd40869f261d3b8b7", size = 9799763, upload-time = "2025-06-07T07:32:12.332Z" },
-    { url = "https://files.pythonhosted.org/packages/a8/88/89cfcaf55c8ccab5a2d59f206bf7b7d4336c4b27d9b63531a0e274cac817/pygame_ce-2.5.5-cp313-cp313-win_amd64.whl", hash = "sha256:8568fab6d43e23ca209fb860f7d387f2f89bd4047a4fa617ed0951fd9739109c", size = 10376053, upload-time = "2025-06-07T07:32:14.526Z" },
-]
-
-[[package]]
 name = "pygments"
 version = "2.19.2"
 source = { registry = "https://pypi.org/simple" }
@@ -939,18 +866,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/a1/53/830aa4c3066a8ab0a
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0d/9b/63f4c7ebc259242c89b3acafdb37b41d1185c07ff0011164674e9076b491/rich-14.0.0-py3-none-any.whl", hash = "sha256:1c9491e1951aac09caffd42f448ee3d04e58923ffe14993f6e83068dc395d7e0", size = 243229, upload-time = "2025-03-30T14:15:12.283Z" },
 ]
-
-[[package]]
-name = "sf2-loader"
-version = "1.25"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "musicpy" },
-    { name = "numpy" },
-    { name = "py" },
-    { name = "pydub" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/71/5d3e65e120c6faf7321044f76ac21b721907cd71f56ac031ce48fc1f6dba/sf2_loader-1.25.tar.gz", hash = "sha256:9f374d2b3654eac2471a3c8216c30b453334f12dc6193a7bced376e094d0f8a1", size = 7556230, upload-time = "2024-06-23T05:38:17.001Z" }
 
 [[package]]
 name = "shellingham"
@@ -1012,9 +927,9 @@ dependencies = [
     { name = "numpy" },
     { name = "pyaudio" },
     { name = "python-rtmidi" },
-    { name = "sf2-loader" },
     { name = "soundfile" },
     { name = "textual" },
+    { name = "tinysoundfont" },
     { name = "typer" },
     { name = "uvicorn" },
 ]
@@ -1039,10 +954,10 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3.1" },
     { name = "pyaudio", specifier = ">=0.2.14" },
     { name = "python-rtmidi", specifier = ">=1.5.8" },
-    { name = "sf2-loader", specifier = ">=1.25" },
     { name = "soundfile", specifier = ">=0.13.1" },
     { name = "textual", specifier = ">=3.5.0" },
     { name = "textual-dev", marker = "extra == 'dev'" },
+    { name = "tinysoundfont", specifier = ">=0.3.7" },
     { name = "typer", specifier = ">=0.16.0" },
     { name = "uvicorn", specifier = ">=0.34.3" },
 ]
@@ -1097,6 +1012,31 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/27/41/09d5695b050d592ff58422be2ca5c9915787f59ff576ca91d9541d315406/textual_serve-1.1.2.tar.gz", hash = "sha256:0ccaf9b9df9c08d4b2d7a0887cad3272243ba87f68192c364f4bed5b683e4bd4", size = 892959, upload-time = "2025-04-16T12:11:41.746Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7c/fb/0006f86960ab8a2f69c9f496db657992000547f94f53a2f483fd611b4bd2/textual_serve-1.1.2-py3-none-any.whl", hash = "sha256:147d56b165dccf2f387203fe58d43ce98ccad34003fe3d38e6d2bc8903861865", size = 447326, upload-time = "2025-04-16T12:11:43.176Z" },
+]
+
+[[package]]
+name = "tinysoundfont"
+version = "0.3.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyaudio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0d/c9/96ef50b61a0c39fb7dbafff61ee759e0eb60e87f98eb04860579672127c8/tinysoundfont-0.3.7.tar.gz", hash = "sha256:13b560f35469303064d7b597c1584ec35f18193fd915c502c29fcba90ac11d31", size = 372892, upload-time = "2025-06-03T15:17:49.392Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f3/75/89def81b8726eacd0d9e6f117aed172ead7a1d454879edea588403f7788d/tinysoundfont-0.3.7-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:99650cb625ebfe808fe24ed279b5970a9b0b2133f624dcaceddca4f364bb5fe6", size = 146444, upload-time = "2025-06-03T15:16:36.35Z" },
+    { url = "https://files.pythonhosted.org/packages/98/e8/a255386032b9acda3c20ae62b3f751f1c957e55b0e215e5674b9b689e0b6/tinysoundfont-0.3.7-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6e4189786c57d16c269337e60cdb6b46204a75a67748f3bc6e2cc39a5c66d5e3", size = 202194, upload-time = "2025-06-03T15:16:37.602Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/b7/d5e33d22462d7ddbfaffee6b918d73d72271f051b181d7cc6935724b045a/tinysoundfont-0.3.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f638536ce801dd77526419e25a53576ffd4f7d58d6e1673e6b70a1a8c4773448", size = 193660, upload-time = "2025-06-03T15:16:38.856Z" },
+    { url = "https://files.pythonhosted.org/packages/da/b6/24f6189d573a65cec47513ef2bc9c7fd442861918db385ddd6a42f62c706/tinysoundfont-0.3.7-cp311-cp311-musllinux_1_1_i686.whl", hash = "sha256:64b69f8c1785d3490afe36d7c5656e95de02edbac1b73aa34c0ffd6d18ea4690", size = 778111, upload-time = "2025-06-03T15:16:41.105Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/b3/8e778f7345fbb7c4f50773ed09c77bc48eee2d6d1fcda7a54e5065bdaf69/tinysoundfont-0.3.7-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:9860a285d346bb4910a8446efabc5671777e4df9424409e926a4c9a40d4de998", size = 718927, upload-time = "2025-06-03T15:16:42.642Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/04/3586b7e9c6acfa65dc8101c8f81f28432259ae2b7ad8e8dd4c75a84c88fb/tinysoundfont-0.3.7-cp311-cp311-win32.whl", hash = "sha256:94a341c8c79af3beb29e1e845f5f0fb6668ab650db319021d926109c9fc20230", size = 136219, upload-time = "2025-06-03T15:16:44.43Z" },
+    { url = "https://files.pythonhosted.org/packages/52/4b/4c086f2190b61339a3fcc2b0a586c9cd05c3d641718a7b5d2d4e0d14caaf/tinysoundfont-0.3.7-cp311-cp311-win_amd64.whl", hash = "sha256:86453db5bb713c28db505f9a9545702942278ce69556b8fd73135ac652fda5b6", size = 153163, upload-time = "2025-06-03T15:16:45.624Z" },
+    { url = "https://files.pythonhosted.org/packages/64/67/9b07986a5ba6fe93efb02e346ed8824d208ad7c1d22515ebe6c3b60c065a/tinysoundfont-0.3.7-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:b871a995adb9ee6e0f14f670311109f48ab6faed7eb746a3ef0be3c5792ad5b7", size = 146338, upload-time = "2025-06-03T15:16:46.839Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/fe/289ad2d5712eb670247cc7c2926495cf582da1a5493543fddf46fea8d3cb/tinysoundfont-0.3.7-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8e6efd15ca7f5647db7709e8d73cebce08a56aded46222654272be5f21002779", size = 200417, upload-time = "2025-06-03T15:16:48.075Z" },
+    { url = "https://files.pythonhosted.org/packages/57/d3/9308fbf4445395ffa3d3cd4fb8c83a85f3b7aa93fa1d9ed1f003e7facdf9/tinysoundfont-0.3.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c48a614fbc0287f16ad4bef857c79e80ba9e413474fbe47f460d2dd1ec449d4b", size = 192372, upload-time = "2025-06-03T15:16:49.542Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/fb/2832235a7ff0d62cf73c0d15a5477d1174854ec1e7911c24c7682b722029/tinysoundfont-0.3.7-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:015be0a82b2ccf0810b2f99dfb6597f31b3e9a0349fa850e6ba5a18a28846780", size = 775618, upload-time = "2025-06-03T15:16:51.347Z" },
+    { url = "https://files.pythonhosted.org/packages/7b/58/fceb0e19d3c5a5a5acb95cbfc88e54675efdbd8903860f6797c6efa2f97c/tinysoundfont-0.3.7-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:56f190d48865ba06e3b1cdfaab5e35c630a3941687c1d42fd9ae1bb81210d152", size = 716786, upload-time = "2025-06-03T15:16:53.334Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/f6/344747b94e50cb30fc2f5f61de5355148ffa297461ca33188331f2aac210/tinysoundfont-0.3.7-cp312-cp312-win32.whl", hash = "sha256:72767f4645567dcc7de2966c7d734c6a8da3d7b44c63d93e05b2e6e3e1942110", size = 136203, upload-time = "2025-06-03T15:16:55Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/8e/041e5342fda5215622dcac52efa08b3abb5b17b14f21586cb5b89dee5a3d/tinysoundfont-0.3.7-cp312-cp312-win_amd64.whl", hash = "sha256:402269dc9da85d722697a96254dbd64d57fe083f16e56b662d8ed897f53a1aa0", size = 153351, upload-time = "2025-06-03T15:16:56.257Z" },
 ]
 
 [[package]]
