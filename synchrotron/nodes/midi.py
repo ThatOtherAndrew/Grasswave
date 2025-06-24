@@ -156,7 +156,7 @@ class SoundFontNode(Node):
         self.exports['SoundFont'] = path.stem
 
     def load_bank(self, bank: int, preset: int = 0) -> None:
-        self.synth.program_select(0, self._sfid, bank, preset)
+        self.synth.program_select(0, self._sfid, bank, preset, preset == 127)
 
         self._current_bank = bank
         self._current_preset = preset
@@ -164,7 +164,7 @@ class SoundFontNode(Node):
         self.exports['Preset'] = self.synth.sfpreset_name(self._sfid, bank, preset)
 
     def load_preset(self, preset: int) -> None:
-        self.synth.program_change(0, preset)
+        self.synth.program_change(0, preset, preset == 127)
 
         self._current_preset = preset
         self.exports['Preset'] = self.synth.sfpreset_name(self._sfid, self._current_bank, preset)
