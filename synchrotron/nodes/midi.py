@@ -5,13 +5,14 @@ from typing import TYPE_CHECKING
 import numpy as np
 # noinspection PyUnresolvedReferences
 from rtmidi import MidiIn
+from sf2_loader import sf2_loader
 
 from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, RenderContext, StreamInput, StreamOutput
 
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['MidiInputNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode']
+__all__ = ['MidiInputNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode', 'SoundFontNode']
 
 
 class MidiInputNode(Node):
@@ -108,3 +109,25 @@ class MonophonicRenderNode(Node):
                 output[i] = 440 * (2 ** ((self.current_note - 69) / 12))
 
         self.frequency.write(output)
+
+
+class SoundFontNode(Node):
+    path: DataInput
+    midi: MidiInput
+    out: StreamOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str):
+        super().__init__(synchrotron, name)
+        self.current_path = self.path.read()
+        self.loader = sf2_loader('/home/andromeda/Downloads/SM64.sf2')
+        self.loader.unload(1)
+
+    def render(self, ctx: RenderContext) -> None:
+        if (new_path := self.path.read()) != self.current_path:
+            self.current_path = new_path
+            for index in range(1, len(self.loader.sfid_list) + 1):
+                self.loader.unload(index)
+            if self.current_path is not None:
+                self.loader.load(self.current_path)
+
+# new "/home/andromeda/Downloads/SM64.sf2" sf2_path; new SoundFontNode renderer; link sf2_path.out -> renderer.path

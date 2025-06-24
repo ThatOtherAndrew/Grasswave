@@ -4,22 +4,20 @@ let
   python = pkgs.python312;
   buildInputs = with pkgs; [
     stdenv.cc.cc
+
     portaudio
+
+    # sf2_loader
+    glib
+    fluidsynth
   ];
 in
   pkgs.mkShell {
-    packages = [
+    packages = with pkgs; [
       (python.withPackages (pypkgs: with pypkgs; [
         uv
       ]))
     ];
-
-#    shellHook = ''
-#      export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath buildInputs}
-#      export UV_PYTHON_DOWNLOADS=never
-#      export UV_USE_MANAGED_PYTHON=0
-#      export UV_PYTHON=${pkgs.python312}/bin/python3.12
-#    '';
 
     shellHook = ''
       export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath buildInputs}
@@ -28,5 +26,7 @@ in
 
       export CFLAGS="-I${pkgs.portaudio}/include"
       export LDFLAGS="-L${pkgs.portaudio}/lib"
+
+      source .venv/bin/activate
     '';
   }
