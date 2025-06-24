@@ -40,14 +40,17 @@ classifiers = [
 ]
 
 dependencies = [
-  "fastapi",
-  "lark",
-  "numpy",
-  "pyaudio",
-  "python-rtmidi",
-  "soundfile",
-  "typer",
-  "uvicorn",
+  "aiohttp>=3.12.13",
+  "fastapi>=0.115.13",
+  "lark>=1.2.2",
+  "numpy>=2.3.1",
+  "pyaudio>=0.2.14",
+  "python-rtmidi>=1.5.8",
+  "sf2-loader>=1.25",
+  "soundfile>=0.13.1",
+  "textual>=3.5.0",
+  "typer>=0.16.0",
+  "uvicorn>=0.34.3",
 ]
 
 [project.optional-dependencies]
@@ -72,3 +75,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build]
 packages = ["synchrotron"]
+
+[dependency-groups]
+dev = [
+    "textual-dev>=1.7.0",
+]
