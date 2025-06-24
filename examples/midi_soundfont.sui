@@ -1,0 +1,28 @@
+/***
+{"port":{"x":-762.5841921073155,"y":-66.60060027987362},"input":{"x":-593.6821277759174,"y":-72.45048987451216},"renderer":{"x":426.1705661987679,"y":-11.04885912841703},"output":{"x":893.5073474540675,"y":21.390654155157222},"midi_to_freq":{"x":124.87705417151395,"y":160.74487218277392},"sine":{"x":493.523569691499,"y":155.98872489134962},"left":{"x":725.2495727539062,"y":-16},"right":{"x":728,"y":76},"sm64":{"x":122.10783258784043,"y":-170.21972492850327},"gmsfx":{"x":113.3241580598854,"y":-112.30321969898553},"percussion":{"x":113.83051877571253,"y":85.78115072496986},"piano":{"x":136.3268287078546,"y":14.065466453984996}}
+***/
+
+new 1 port;
+new MidiInputNode input;
+new SoundFontNode renderer;
+new PlaybackNode output;
+new MonophonicRenderNode midi_to_freq;
+new SineNode sine;
+new AddNode left;
+new AddNode right;
+new "SM64.sf2" sm64;
+new "8MBGMSFX.sf2" gmsfx;
+new 127 percussion;
+new 0 piano;
+
+link port.out -> input.port;
+link input.out -> renderer.midi;
+link midi_to_freq.frequency -> sine.frequency;
+link renderer.left -> left.a;
+link renderer.right -> right.a;
+link sine.out -> left.b;
+link sine.out -> right.b;
+link left.out -> output.left;
+link right.out -> output.right;
+link sm64.out -> renderer.path;
+link piano.out -> renderer.preset;
