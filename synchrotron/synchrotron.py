@@ -166,8 +166,11 @@ class Synchrotron:
     def export_state(self) -> str:
         script = ''
         for node in self.nodes:
-            # noinspection PyUnresolvedReferences
-            script += f'new {repr(node.value) if isinstance(node, DataNode) else node.__class__.__name__} {node.name};\n'
+            if isinstance(node, DataNode):
+                constructor = f'"{node.value}"' if isinstance(node.value, str) else repr(node.value)
+            else:
+                constructor = node.__class__.__name__
+            script += f'new {constructor} {node.name};\n'
         script += '\n'
         for connection in self.connections:
             script += f'link {connection.source.instance_name} -> {connection.sink.instance_name};\n'
