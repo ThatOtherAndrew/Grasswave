@@ -26,8 +26,7 @@ async def stop_rendering(synchrotron: SynchrotronDependency) -> None:
 
 @router.get('/clear')
 async def clear_graph(synchrotron: SynchrotronDependency) -> None:
-    for node in synchrotron.nodes:
-        synchrotron.remove_node(node.name)
+    synchrotron.execute('clear')
 
 
 @router.get('/export')

@@ -108,8 +108,8 @@ class SynchrolangTransformer(lark.Transformer):
         self.synchrotron.stop_rendering()
 
     def clear(self) -> None:
-        for node in self.synchrotron.nodes:
-            self.synchrotron.remove_node(node.name)
+        while self.synchrotron.nodes:
+            self.synchrotron.remove_node(self.synchrotron.nodes[0].name)
 
     def export(self) -> str:
         return self.synchrotron.export_state()
