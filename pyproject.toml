@@ -5,7 +5,7 @@ description = "Graph-based live audio manipulation engine implemented in Python"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
-keywords = ["audio-processing", "synthesizer"]
+keywords = ["audio-processing", "synthesizer", "live-coding"]
 
 authors = [
   { name = "ThatOtherAndrew", email = "andrew@thatother.dev" }
@@ -43,6 +43,7 @@ dependencies = [
   "aiohttp>=3.12.13",
   "fastapi>=0.115.13",
   "lark>=1.2.2",
+  "mingus>=0.6.1",
   "numpy>=2.3.1",
   "pyaudio>=0.2.14",
   "python-rtmidi>=1.5.8",
@@ -53,14 +54,8 @@ dependencies = [
   "uvicorn>=0.34.3",
 ]
 
-[project.optional-dependencies]
-dev = [
-  "build",
-  "textual-dev",
-]
-
 [project.urls]
-"Homepage" = "https://github.com/ThatOtherAndrew/Synchrotron"
+"Homepage" = "https://synchrotron.thatother.dev"
 "Bug Reports" = "https://github.com/ThatOtherAndrew/Synchrotron/issues"
 "Source" = "https://github.com/ThatOtherAndrew/Synchrotron"
 
@@ -68,15 +63,8 @@ dev = [
 synchrotron-server = "synchrotron.server.cli:cli"
 synchrotron-console = "synchrotron.console.app:run_app"
 
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build]
-packages = ["synchrotron"]
-
 [dependency-groups]
 dev = [
+    "mkdocs-material>=9.6.14",
     "textual-dev>=1.7.0",
 ]
