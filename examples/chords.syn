@@ -1,0 +1,31 @@
+/***
+{"renderer":{"x":426.1705661987679,"y":-11.04885912841703},"output":{"x":658.1855634533617,"y":5.445856514241438},"sm64":{"x":122.10783258784043,"y":-170.21972492850327},"gmsfx":{"x":113.3241580598854,"y":-112.30321969898553},"piano":{"x":143.5851091954882,"y":100.19105876402028},"chord_to_midi":{"x":103.66262378195752,"y":-47.9013809477152},"chord_trigger":{"x":-132.16698843367544,"y":103.79259128567824},"octave":{"x":-77.35755669347454,"y":32.850469280790556},"relative_chord":{"x":-158.9538836167285,"y":-166.37173151884252},"organ":{"x":144.11818781250054,"y":32.850469280790556},"c_key":{"x":-137.7600324678314,"y":-98.55140784237167},"d_key":{"x":-137.76003246783142,"y":-43.44739485523912},"absolute_chord":{"x":-158.9538836167285,"y":-224.6548221783096},"chord_freq":{"x":-351.81792907169245,"y":57.22339810202227},"pwm":{"x":-322.21765350783744,"y":126.2608360140429}}
+***/
+
+new SoundFontNode renderer;
+new PlaybackNode output;
+new "SM64.sf2" sm64;
+new "8MBGMSFX.sf2" gmsfx;
+new 0 piano;
+new ChordNode chord_to_midi;
+new SquareNode chord_trigger;
+new 5 octave;
+new "Im7" relative_chord;
+new 16 organ;
+new "C" c_key;
+new "D" d_key;
+new "Cm7" absolute_chord;
+new 2 chord_freq;
+new 0.5 pwm;
+
+link chord_to_midi.out -> renderer.midi;
+link renderer.left -> output.left;
+link renderer.right -> output.right;
+link chord_trigger.out -> chord_to_midi.trigger;
+link octave.out -> chord_to_midi.octave;
+link gmsfx.out -> renderer.path;
+link organ.out -> renderer.preset;
+link absolute_chord.out -> chord_to_midi.chord;
+link c_key.out -> chord_to_midi.key;
+link chord_freq.out -> chord_trigger.frequency;
+link pwm.out -> chord_trigger.pwm;

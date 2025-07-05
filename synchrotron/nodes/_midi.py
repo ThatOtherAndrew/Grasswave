@@ -27,7 +27,12 @@ class MidiBuffer:
             return ()
         return tuple(self.data[position])
 
-    def add_message(self, position: int, message: bytes):
+    def add_message(self, position: int, message: bytes | bytearray):
+        if isinstance(message, bytearray):
+            message = bytes(message)
+        elif not isinstance(message, bytes):
+            raise TypeError('MIDI message must be bytes or bytearray')
+
         if position not in range(self.length):
             raise ValueError(f'MIDI message position {position} out of bounds for buffer length {self.length}')
 
