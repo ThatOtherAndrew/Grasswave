@@ -1,0 +1,26 @@
+name: Build and publish to PyPI
+
+on: push
+
+jobs:
+  build:
+    name: Build Synchrotron
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Build Python package
+        run: uv build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: synchrotron-dist
+          path: dist/
