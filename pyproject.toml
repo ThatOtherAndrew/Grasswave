@@ -1,12 +1,17 @@
+[project.urls]
+"Homepage" = "https://synchrotron.thatother.dev"
+"Bug Reports" = "https://github.com/ThatOtherAndrew/Synchrotron/issues"
+"Source" = "https://github.com/ThatOtherAndrew/Synchrotron"
+
 [project]
 name = "synchrotron"
-version = "0.1.0"
 description = "Graph-based live audio manipulation engine implemented in Python"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LGPL-3.0-only"
 license-files = [ "LICENSE" ]
 keywords = ["dsp", "audio-processing", "synthesiser", "synthesizer", "live-coding"]
+dynamic = ["version"]
 
 authors = [
   { name = "ThatOtherAndrew", email = "andrew@thatother.dev" }
@@ -59,15 +64,14 @@ dev = [
   "textual-dev>=1.7.0",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project.urls]
-"Homepage" = "https://synchrotron.thatother.dev"
-"Bug Reports" = "https://github.com/ThatOtherAndrew/Synchrotron/issues"
-"Source" = "https://github.com/ThatOtherAndrew/Synchrotron"
-
 [project.scripts]
 synchrotron-server = "synchrotron.server.cli:cli"
 synchrotron-console = "synchrotron.console.app:run_app"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0"
