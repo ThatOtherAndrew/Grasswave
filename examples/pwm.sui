@@ -1,0 +1,23 @@
+/***
+{"pwm_mod_freq":{"x":-210.10438468246025,"y":7.105427357601002e-15},"scale_val":{"x":-6.595204900346246,"y":60.2990162317375},"pwm_mod":{"x":-1.4210854715202004e-14,"y":-1.8843442572417892},"offset_val":{"x":191.26094211004227,"y":90.44852434760621},"scale":{"x":189.37659785280047,"y":32.03385237311053},"freq":{"x":8.479549157588025,"y":-138.499302907272},"offset":{"x":388.17491699181005,"y":56.53032771725388},"square":{"x":188.43442572417973,"y":-125.30889310657945},"out":{"x":398.34627013554643,"y":-131.6727865214093}}
+***/
+
+new 0.2 pwm_mod_freq;
+new 0.24 scale_val;
+new SineNode pwm_mod;
+new 0.75 offset_val;
+new MultiplyNode scale;
+new 440 freq;
+new AddNode offset;
+new SquareNode square;
+new PlaybackNode out;
+
+link square.out -> out.left;
+link square.out -> out.right;
+link pwm_mod_freq.out -> pwm_mod.frequency;
+link pwm_mod.out -> scale.a;
+link scale_val.out -> scale.b;
+link scale.out -> offset.a;
+link offset_val.out -> offset.b;
+link freq.out -> square.frequency;
+link offset.out -> square.pwm;
