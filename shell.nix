@@ -8,6 +8,8 @@ let
   ];
 in
   pkgs.mkShell {
+    name = "synchrotron";
+
     packages = with pkgs; [
       (python.withPackages (pypkgs: with pypkgs; [
         uv
