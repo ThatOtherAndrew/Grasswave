@@ -1,0 +1,44 @@
+/***
+{"scale_val":{"x":-71.58750625525586,"y":-148.4568939729341},"pwm_mod":{"x":-78.17002355632326,"y":-206.69452016704707},"offset_val":{"x":121.48295380347543,"y":-102.6645320787777},"scale":{"x":119.21778491626122,"y":-162.53997958743102},"freq":{"x":299.04549629374463,"y":-189.4398351620254},"offset":{"x":286.692654723292,"y":-119.50976175516435},"square":{"x":447.0069226620742,"y":-131.6144492375485},"out":{"x":816.9436919162135,"y":-85.64792261553745},"mebun":{"x":-248.74010298666013,"y":-207.5592970848731},"bjjkl":{"x":632.9442993594037,"y":-110.11976857364425},"efznt":{"x":-60.1337696641921,"y":-83.29576930067611},"borex":{"x":-292,"y":-94},"tvqyf":{"x":635.8012291327445,"y":-54.10569155269765},"dsfjg":{"x":445.17177536756463,"y":-25.64084613986477},"tegex":{"x":289.33906729470056,"y":23.588284032030515},"nhzmw":{"x":-49.83099981824203,"y":-42.725232335145606},"hhkee":{"x":122.34752321075737,"y":-33.71425606992229},"dypfk":{"x":292.2467674365597,"y":-56.10722090107831},"dpbsx":{"x":135.6584408904237,"y":22.753232563440307}}
+***/
+
+new 0.24 scale_val;
+new SineNode pwm_mod;
+new 0.75 offset_val;
+new MultiplyNode scale;
+new 440 freq;
+new AddNode offset;
+new SquareNode square;
+new PlaybackNode out;
+new 5 mebun;
+new MultiplyNode bjjkl;
+new SineNode efznt;
+new 1.5 borex;
+new MultiplyNode tvqyf;
+new MultiplyNode dsfjg;
+new -1 tegex;
+new 0.25 nhzmw;
+new MultiplyNode hhkee;
+new AddNode dypfk;
+new 0.75 dpbsx;
+
+link pwm_mod.out -> scale.a;
+link scale_val.out -> scale.b;
+link scale.out -> offset.a;
+link offset_val.out -> offset.b;
+link freq.out -> square.frequency;
+link offset.out -> square.pwm;
+link mebun.out -> pwm_mod.frequency;
+link square.out -> bjjkl.a;
+link bjjkl.out -> out.left;
+link borex.out -> efznt.frequency;
+link square.out -> tvqyf.a;
+link tegex.out -> dsfjg.b;
+link dsfjg.out -> tvqyf.b;
+link tvqyf.out -> out.right;
+link nhzmw.out -> hhkee.b;
+link efznt.out -> hhkee.a;
+link dpbsx.out -> dypfk.b;
+link hhkee.out -> dypfk.a;
+link dypfk.out -> dsfjg.a;
+link dypfk.out -> bjjkl.b;
