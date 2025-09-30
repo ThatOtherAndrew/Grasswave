@@ -58,6 +58,6 @@ connection: output "->" input
         | ("remove"i | "delete"i)                  node                                 -> remove
         | ["eval"i | "get"i | "query"i]            expression
 
-?delimited_command: command? ";" _NEWLINE* | command _NEWLINE+
-script: delimited_command* command?
+?sep: (";" _NEWLINE* | _NEWLINE+)
+script: _NEWLINE* (command (sep command)* sep?)?
 ?start: script
