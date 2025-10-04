@@ -92,7 +92,7 @@ class ClockNode(Node):
 
     def __init__(self, synchrotron: Synchrotron, name: str):
         super().__init__(synchrotron, name)
-        self.count = 0
+        self.count = float('inf')  # Fire on first sample
 
     def render(self, ctx: RenderContext) -> None:
         frequency = self.frequency.read(ctx)
@@ -101,9 +101,9 @@ class ClockNode(Node):
         for i in range(ctx.buffer_size):
             period = 1 / frequency[i]
             self.count += frequency[i] / ctx.sample_rate
-            if self.count > period:
+            if self.count >= period:
                 output[i] = True
-                self.count %= period
+                self.count = 0
 
         self.out.write(output)
 
