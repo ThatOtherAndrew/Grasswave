@@ -14,7 +14,7 @@ from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, R
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['MidiInputNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode', 'SoundFontNode']
+__all__ = ['MidiInputNode', 'MidiLoopNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode', 'SoundFontNode']
 
 
 class MidiInputNode(Node):
@@ -54,6 +54,76 @@ class MidiInputNode(Node):
         self.out.write(buffer)
 
 
+class MidiLoopNode(Node):
+    source: MidiInput
+    loop: StreamInput
+    reset: StreamInput
+    out: MidiOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str):
+        super().__init__(synchrotron, name)
+        self.recording = False  # Wait for first pulse to start recording
+        self.recorded_messages = []  # list of (position_in_loop, message) tuples
+        self.loop_length = 0
+        self.loop_position = 0
+        self.last_loop_pulse = False
+        self.last_reset_pulse = False
+
+    def render(self, ctx: RenderContext) -> None:
+        loop_signal = self.loop.read(ctx)
+        reset_signal = self.reset.read(ctx)
+        output = MidiBuffer(length=ctx.buffer_size)
+
+        for i in range(ctx.buffer_size):
+            # Check for reset pulse
+            if reset_signal[i] and not self.last_reset_pulse:
+                self.recording = False
+                self.recorded_messages = []
+                self.loop_length = 0
+                self.loop_position = 0
+            self.last_reset_pulse = reset_signal[i]
+
+            # Check for loop pulse
+            if loop_signal[i] and not self.last_loop_pulse:
+                if self.loop_length == 0:
+                    # No loop yet
+                    if self.recording:
+                        # Second pulse: lock in the loop length and reset position
+                        self.loop_length = self.loop_position
+                        self.loop_position = 0
+                    else:
+                        # First pulse: start recording
+                        self.recording = True
+                        self.loop_position = 0
+                        self.recorded_messages = []
+                else:
+                    # Already have a loop: reset loop position
+                    self.loop_position = 0
+            self.last_loop_pulse = loop_signal[i]
+
+            # Record incoming MIDI if we're recording
+            if self.recording:
+                for message in self.source.buffer.get_messages_at_pos(i):
+                    self.recorded_messages.append((self.loop_position, message))
+
+            # Play back loop if we have one
+            if self.loop_length > 0:
+                for recorded_pos, message in self.recorded_messages:
+                    if recorded_pos == self.loop_position:
+                        output.add_message(position=i, message=message)
+
+            # Increment loop position (used both for recording and playback)
+            if self.recording:
+                if self.loop_length > 0:
+                    # Looping mode: wrap around
+                    self.loop_position = (self.loop_position + 1) % self.loop_length
+                else:
+                    # Still recording first loop: just increment
+                    self.loop_position += 1
+
+        self.out.write(output)
+
+
 class MidiTriggerNode(Node):
     midi: MidiInput
     trigger: StreamOutput
@@ -61,7 +131,7 @@ class MidiTriggerNode(Node):
     def render(self, ctx: RenderContext) -> None:
         output = np.zeros(shape=ctx.buffer_size, dtype=np.bool)
 
-        for i, messages in self.midi.buffer.data.values():
+        for i, messages in self.midi.buffer.data.items():
             if any(msg[0] & MidiMessage.OPCODE_MASK == MidiMessage.NOTE_ON for msg in messages):
                 output[i] = True
 

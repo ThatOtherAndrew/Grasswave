@@ -68,7 +68,6 @@ class ChordNode(Node):
         self.out.write(buffer)
 
 
-# ai-generated
 class MidiSequenceNode(Node):
     sequence: DataInput
     step: StreamInput
@@ -101,7 +100,7 @@ class MidiSequenceNode(Node):
 
         self.out.write(buffer)
 
-
+# ai-generated
 class MidiArpeggiatorNode(Node):
     notes: MidiInput
     step: StreamInput
