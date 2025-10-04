@@ -66,7 +66,7 @@ If you get a pyaudio/portaudio error during installation that looks e.g. like th
       compilation terminated.
       error: command '/usr/bin/x86_64-linux-gnu-gcc' failed with exit code 1
       [end of output]
-  
+
   note: This error originates from a subprocess, and is likely not a problem with pip.
   ERROR: Failed building wheel for pyaudio
 Failed to build pyaudio
@@ -94,6 +94,34 @@ synchrotron-console
 Synchrotron provides a **Python API**, **[DSL](https://www.jetbrains.com/mps/concepts/domain-specific-languages/)**, and **REST API** for interacting with the *synchrotron server* - the component of Synchrotron which handles the audio rendering and playback.
 
 For the humans, you can find a web-based user interface for Synchrotron at **[ThatOtherAndrew/SynchrotronUI](https://github.com/ThatOtherAndrew/SynchrotronUI)**.
+
+## Roadmap
+
+### Core
+| Feature | Status | Version | Notes
+|---|---|---|---|
+| Python API | ✅ | 0.1.0 | |
+| Synchrotron console | ✅ | 0.1.0 | |
+| Synchrolang | ✅ | 0.1.0 | |
+| REST API | ✅ | 0.1.0 | FastAPI server |
+| Live reload | ❌ | 0.2.0 | In progress |
+| WebSocket API | ❌ | | |
+| Documentation 😭 | ❌ | | |
+
+### Nodes
+| Feature | Status | Version | Notes |
+|---|---|---|---|
+| Primitive waves | ✅ | 0.1.0 | No anti-aliasing |
+| Speaker playback | ✅ | 0.1.0 | No output device selection |
+| WAV file output | ✅ | 0.1.0 | |
+| Basic arithmetic | ✅ | 0.1.0 | |
+| Control signals | ✅ | 0.1.0 | |
+| MIDI input | ✅ | 0.1.0 | |
+| Basic MIDI manipulation | ✅ | 0.1.0 | |
+| SoundFont playback | ✅ | 0.1.0 | |
+| Arpeggiator | ✅ | 0.1.0 | |
+| Chord parsing | ✅ | 0.1.0 | |
+| Microphone input | ❌ | | |
 
 ## Random YouTube Video
 
