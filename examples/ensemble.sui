@@ -1,0 +1,63 @@
+/***
+{"_uascr":{"x":-745.3144176424529,"y":-25.565446067888335},"_krams":{"x":-576.9290144338918,"y":-10.730039898016287},"_nnfyd":{"x":71.70383021454796,"y":-481.55419509317494},"_ilber":{"x":391.3786267387179,"y":-546.2365743039525},"_qdflq":{"x":24.02365185296435,"y":-557.5666636076227},"_lcikb":{"x":-127.45927665850616,"y":-537.7850334481456},"_dwjty":{"x":-113.42139834111481,"y":-592.2111800448836},"_imwjg":{"x":88.77017065102416,"y":-641.1940858649269},"_ykioq":{"x":954.4959529096146,"y":-117.19119972831406},"_jxqcc":{"x":425.2517950020746,"y":-108.14486371790508},"_povbu":{"x":-31.153592951861384,"y":-297.2441708344301},"_esklp":{"x":195.80891077468544,"y":-617.2292614111426},"_ostmp":{"x":194.77413519101327,"y":-559.7992165173372},"_mzwhh":{"x":213.38552733098328,"y":-258.760610728951},"_jbnns":{"x":806.5132730223338,"y":-63.702087888354505},"_wamgt":{"x":456.9857512636326,"y":-168.062218185673},"percussion":{"x":-11.777893213358894,"y":-213.98384436577695},"_sdsyh":{"x":-476.32620944731445,"y":-348.622003631656},"_cqtxy":{"x":-246,"y":-276.5},"_atkxp":{"x":215.1723466850709,"y":-343.1319814246977},"_suveq":{"x":-17.156599071234893,"y":-369.58173832618485},"_trkuh":{"x":-233.75866234557532,"y":-423.91096871842865},"_nymvw":{"x":-451.79044220918536,"y":-250.91526141681024},"_gdkdj":{"x":620.6583852769145,"y":-203.32371526024394},"_gagna":{"x":186.99859194131307,"y":-158.78410808983497},"_xcuep":{"x":156.9578559341492,"y":-100.08001716805374},"_ytkxs":{"x":-24.91835776847317,"y":-135.64364581422143},"_hvwkd":{"x":-246.71468895957184,"y":-167.21104593951662},"_cdzcg":{"x":461.0734031576793,"y":-266.1480418499096},"_xqjue":{"x":-422.8172433263736,"y":-140.83692141582557},"_ogxpw":{"x":46.461094637968586,"y":119.07651138926884},"celesta":{"x":176,"y":-42.5},"_mjrkg":{"x":631.8214590389841,"y":-12.402112879060791},"_edaqn":{"x":80.18484233488297,"y":11.617455442466934},"_bseqg":{"x":277.91109404863425,"y":29.6761831637004},"_luvam":{"x":79.41109404863425,"y":64.1761831637004},"_kxcnw":{"x":438.6560351057681,"y":-21.061299698786875}}
+***/
+
+new 1 _uascr;
+new MidiInputNode _krams;
+new PlaybackNode _ykioq;
+new SoundFontNode _jxqcc;
+new MidiSequenceNode _povbu;
+new SoundFontNode _mzwhh;
+new AddNode _jbnns;
+new AddNode _wamgt;
+new 127 percussion;
+new [36, 0, 0, 36, 38, 0, 0, 36, 0, 36, 36, 0, 38, 0, 0, 0] _sdsyh;
+new ClockNode _cqtxy;
+new SoundFontNode _atkxp;
+new MidiSequenceNode _suveq;
+new [51, 54] _trkuh;
+new 2.5 _nymvw;
+new MultiplyNode _gdkdj;
+new "SM64.sf2" _gagna;
+new MidiLoopNode _xcuep;
+new ClockNode _ytkxs;
+new MultiplyNode _hvwkd;
+new 0.6 _cdzcg;
+new 0.25 _xqjue;
+new MidiTriggerNode _ogxpw;
+new 8 celesta;
+new SoundFontNode _mjrkg;
+new "C" _edaqn;
+new ChordNode _bseqg;
+new 5 _luvam;
+new MidiLoopNode _kxcnw;
+
+link _uascr.out -> _krams.port;
+link _jbnns.out -> _ykioq.right;
+link percussion.out -> _mzwhh.preset;
+link _sdsyh.out -> _povbu.sequence;
+link _povbu.out -> _mzwhh.midi;
+link _mzwhh.right -> _wamgt.b;
+link _atkxp.right -> _wamgt.a;
+link percussion.out -> _atkxp.preset;
+link _trkuh.out -> _suveq.sequence;
+link _suveq.out -> _atkxp.midi;
+link _nymvw.out -> _cqtxy.frequency;
+link _gagna.out -> _jxqcc.path;
+link _xcuep.out -> _jxqcc.midi;
+link _jxqcc.right -> _jbnns.a;
+link _nymvw.out -> _hvwkd.a;
+link _cdzcg.out -> _gdkdj.a;
+link _xqjue.out -> _hvwkd.b;
+link _hvwkd.out -> _ytkxs.frequency;
+link _ytkxs.out -> _xcuep.loop;
+link _wamgt.out -> _ykioq.left;
+link celesta.out -> _jxqcc.preset;
+link percussion.out -> _mjrkg.preset;
+link _ogxpw.trigger -> _bseqg.trigger;
+link _mjrkg.left -> _jbnns.b;
+link _luvam.out -> _bseqg.octave;
+link _edaqn.out -> _bseqg.chord;
+link _ytkxs.out -> _kxcnw.loop;
+link _kxcnw.out -> _mjrkg.midi;
+link _bseqg.out -> _kxcnw.source;
