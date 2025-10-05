@@ -1,0 +1,63 @@
+/***
+{"port":{"x":-827.9834914240046,"y":-44.171273415142934},"input":{"x":-670.9395339895955,"y":-52.95786968696716},"output":{"x":877.5354852459707,"y":-140.0256241999447},"keys":{"x":457.3891331473325,"y":-100.5333888940282},"perc_1_sequence":{"x":-68.94262834587046,"y":-299.76343986069736},"perc_1":{"x":461.04219014904817,"y":-189.96709327948852},"kbd_mix":{"x":664.4324096432987,"y":-51.016296515226365},"perc_mix":{"x":672.0470430777431,"y":-220.15238601518413},"percussion":{"x":272.95361796431285,"y":-230.92003832186776},"perc_1_pattern":{"x":-476.32620944731445,"y":-348.622003631656},"step_trigger":{"x":-275.797266197005,"y":-264.30856115024955},"perc_2":{"x":459.8807158981589,"y":-267.459112230289},"perc_2_sequence":{"x":-60.8239288598676,"y":-367.90222564200667},"perc_2_pattern":{"x":-279.9452611604753,"y":-417.19291798171594},"beat":{"x":-451.79044220918536,"y":-247.53238371730941},"sm64":{"x":274.69166345576156,"y":-164.71868565688217},"celesta_loop":{"x":212.10642470155904,"y":-99.23429774317853},"loop_trigger":{"x":-68.05004843710883,"y":-151.7123148868504},"multiply":{"x":-275.46914940532895,"y":-192.58262868577287},"quarter":{"x":-436.34875412437697,"y":-172.12854013620833},"cowbell_trigger":{"x":-246.68905750287823,"y":66.55943473966259},"celesta":{"x":286.78924465865236,"y":-38.271402875623956},"cowbell":{"x":455.81002751449546,"y":-1.9213301788536938},"cowbell_chord":{"x":151.62380738994028,"y":20.10446784607339},"octave":{"x":-152.58893372690991,"y":6.1801383869477675},"_egumz":{"x":-839.7320435497865,"y":26.286028435991625},"_icznx":{"x":-369.4153997895562,"y":79.96290406893795},"_mzjoy":{"x":-50.5,"y":-119},"_dqdhx":{"x":-135.5,"y":-61},"_ngaku":{"x":13,"y":-70}}
+***/
+
+new 1 port;
+new MidiInputNode input;
+new PlaybackNode output;
+new SoundFontNode keys;
+new MidiSequenceNode perc_1_sequence;
+new SoundFontNode perc_1;
+new AddNode kbd_mix;
+new AddNode perc_mix;
+new 127 percussion;
+new [36, 0, 0, 36, 38, 0, 0, 36, 0, 36, 36, 0, 38, 0, 0, 0] perc_1_pattern;
+new ClockNode step_trigger;
+new SoundFontNode perc_2;
+new MidiSequenceNode perc_2_sequence;
+new [51, 54] perc_2_pattern;
+new 2.5 beat;
+new "SM64.sf2" sm64;
+new MidiLoopNode celesta_loop;
+new ClockNode loop_trigger;
+new MultiplyNode multiply;
+new 0.25 quarter;
+new MidiTriggerNode cowbell_trigger;
+new 8 celesta;
+new SoundFontNode cowbell;
+new ChordNode cowbell_chord;
+new 5 octave;
+new 0 _egumz;
+new SolanaNode _icznx;
+new "D" _mzjoy;
+new "Cmaj7" _dqdhx;
+new "Dmin7" _ngaku;
+
+link kbd_mix.out -> output.right;
+link percussion.out -> perc_1.preset;
+link perc_1_pattern.out -> perc_1_sequence.sequence;
+link perc_1_sequence.out -> perc_1.midi;
+link perc_1.left -> perc_mix.b;
+link perc_2.right -> perc_mix.a;
+link percussion.out -> perc_2.preset;
+link perc_2_pattern.out -> perc_2_sequence.sequence;
+link perc_2_sequence.out -> perc_2.midi;
+link beat.out -> step_trigger.frequency;
+link sm64.out -> keys.path;
+link celesta_loop.out -> keys.midi;
+link keys.right -> kbd_mix.a;
+link beat.out -> multiply.a;
+link quarter.out -> multiply.b;
+link multiply.out -> loop_trigger.frequency;
+link loop_trigger.out -> celesta_loop.loop;
+link perc_mix.out -> output.left;
+link celesta.out -> keys.preset;
+link cowbell.left -> kbd_mix.b;
+link octave.out -> cowbell_chord.octave;
+link step_trigger.out -> perc_1_sequence.step;
+link _egumz.out -> input.port;
+link step_trigger.out -> perc_2_sequence.step;
+link _icznx.blocks -> cowbell_chord.trigger;
+link cowbell_chord.out -> cowbell.midi;
+link octave.out -> cowbell.preset;
+link _dqdhx.out -> cowbell_chord.chord;
