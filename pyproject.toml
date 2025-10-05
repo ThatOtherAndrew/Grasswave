@@ -56,6 +56,8 @@ dependencies = [
   "tinysoundfont>=0.3.7",
   "typer>=0.16.0",
   "uvicorn>=0.34.3",
+  "websocket>=0.2.1",
+  "websocket-client>=1.8.0",
 ]
 
 [dependency-groups]
