@@ -13,7 +13,7 @@ from . import DataInput, Node, RenderContext, StreamInput, StreamOutput
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['SilenceNode', 'SineNode', 'SquareNode', 'SawtoothNode', 'PlaybackNode', 'WavFileNode']
+__all__ = ['SilenceNode', 'SineNode', 'SquareNode', 'SawtoothNode', 'PlaybackNode', 'RecordingNode', 'WavFileNode']
 
 
 class SilenceNode(Node):
@@ -120,6 +120,55 @@ class PlaybackNode(Node):
         stereo_buffer[0::2] = left_buffer
         stereo_buffer[1::2] = right_buffer
         self.playback_queue.put_nowait(stereo_buffer)
+
+
+# ai-generated
+class RecordingNode(Node):
+    left: StreamOutput
+    right: StreamOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str) -> None:
+        super().__init__(synchrotron, name)
+
+        self.recording_queue = Queue()
+
+        # noinspection PyTypeChecker
+        self.stream = synchrotron.pyaudio_session.open(
+            rate=synchrotron.sample_rate,
+            channels=2,
+            format=pyaudio.paFloat32,
+            input=True,
+            frames_per_buffer=synchrotron.buffer_size,
+            stream_callback=self._pyaudio_callback,
+        )
+
+        self.exports['Device'] = synchrotron.pyaudio_session.get_default_input_device_info().get('name')
+
+    def _pyaudio_callback(self, in_data, *_):
+        stereo_buffer = np.frombuffer(in_data, dtype=np.float32)
+        self.recording_queue.put_nowait(stereo_buffer)
+        return None, pyaudio.paContinue
+
+    def render(self, ctx: RenderContext) -> None:
+        # Drain all stale buffers from the queue, keeping only the most recent one
+        # This ensures we always get live audio instead of buffered audio from before rendering started
+        stereo_buffer = None
+        while not self.recording_queue.empty():
+            if stereo_buffer is not None:
+                self.recording_queue.task_done()
+            stereo_buffer = self.recording_queue.get()
+
+        # If queue was empty, block and wait for the next buffer
+        if stereo_buffer is None:
+            stereo_buffer = self.recording_queue.get()
+
+        self.recording_queue.task_done()
+
+        left_buffer = stereo_buffer[0::2]
+        right_buffer = stereo_buffer[1::2]
+
+        self.left.write(left_buffer)
+        self.right.write(right_buffer)
 
 
 class WavFileNode(Node):
