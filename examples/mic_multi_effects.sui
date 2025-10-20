@@ -1,0 +1,26 @@
+/***
+{"input":{"x":-333.21467340681244,"y":-77.87255195227894},"output":{"x":858.8295634753688,"y":-56.84082102361384},"crush_left":{"x":159.48919051956054,"y":-15.407225554897824},"bits":{"x":-3.44301649717238,"y":-2.741348585022134},"_tkiex":{"x":691.9042707672193,"y":-52.74425606141578},"_qhzgg":{"x":521.8304027316792,"y":-28.39291889889234},"_xigue":{"x":520.9285013552894,"y":-67.17467808365188},"_uvpqo":{"x":160.50081625200653,"y":-179.13962071998145},"_kfeaj":{"x":-24.819030617764653,"y":-237.34135800541173},"_rrjgb":{"x":26.112199546929823,"y":134.57825920340744}}
+***/
+
+new RecordingNode input;
+new PlaybackNode output;
+new BitcrushNode crush_left;
+new 6 bits;
+new AddNode _tkiex;
+new AddNode _qhzgg;
+new AddNode _xigue;
+new MultiplyNode _uvpqo;
+new 2 _kfeaj;
+new MultiplyNode _rrjgb;
+
+link bits.out -> crush_left.bit_depth;
+link _xigue.out -> _tkiex.a;
+link _qhzgg.out -> _tkiex.b;
+link _tkiex.out -> output.left;
+link _tkiex.out -> output.right;
+link crush_left.out -> _qhzgg.a;
+link _uvpqo.out -> _xigue.a;
+link _kfeaj.out -> _uvpqo.a;
+link input.left -> _rrjgb.a;
+link input.right -> _rrjgb.b;
+link _rrjgb.out -> _qhzgg.b;
