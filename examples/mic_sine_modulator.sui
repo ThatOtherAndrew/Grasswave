@@ -1,0 +1,14 @@
+/***
+{"input":{"x":-284.3673508554921,"y":33.96559730056068},"output":{"x":270.5960632582281,"y":28.503781270189442},"gain_left":{"x":25.96023002376829,"y":12.460910411408777},"gain_right":{"x":25.583703052359752,"y":68.61085029269694},"gain_level":{"x":-202.52154518964488,"y":-82.87183864003926}}
+***/
+
+new RecordingNode input;
+new PlaybackNode output;
+new SineNode _qfvfj;
+new MultiplyNode _lbfdi;
+new 1000 _qlvis;
+
+link _qfvfj.out -> output.left;
+link _qlvis.out -> _lbfdi.a;
+link _lbfdi.out -> _qfvfj.frequency;
+link input.left -> _lbfdi.b;
