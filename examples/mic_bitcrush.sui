@@ -1,0 +1,16 @@
+/***
+{"input":{"x":-289.9265335477049,"y":17.72209023658354},"output":{"x":407.3474681020906,"y":17.549068071156096},"crush_left":{"x":149.0025154652991,"y":8.908371660154408},"crush_right":{"x":151.50591046355953,"y":68.31030857500038},"bits":{"x":-87.01817298837443,"y":96.05902213002378}}
+***/
+
+new RecordingNode input;
+new PlaybackNode output;
+new BitcrushNode crush_left;
+new BitcrushNode crush_right;
+new 6 bits;
+
+link input.left -> crush_left.signal;
+link input.right -> crush_right.signal;
+link crush_left.out -> output.left;
+link crush_right.out -> output.right;
+link bits.out -> crush_left.bit_depth;
+link bits.out -> crush_right.bit_depth;

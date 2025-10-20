@@ -1,0 +1,16 @@
+/***
+{"input":{"x":-284.3673508554921,"y":33.96559730056068},"output":{"x":270.5960632582281,"y":28.503781270189442},"gain_left":{"x":25.96023002376829,"y":12.460910411408777},"gain_right":{"x":25.583703052359752,"y":68.61085029269694},"gain_level":{"x":-202.52154518964488,"y":-82.87183864003926}}
+***/
+
+new RecordingNode input;
+new PlaybackNode output;
+new MultiplyNode gain_left;
+new MultiplyNode gain_right;
+new 1 gain_level;
+
+link input.left -> gain_left.a;
+link gain_left.out -> output.left;
+link gain_right.out -> output.right;
+link gain_level.out -> gain_left.b;
+link input.right -> gain_right.a;
+link gain_level.out -> gain_right.b;
