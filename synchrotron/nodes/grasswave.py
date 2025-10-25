@@ -71,7 +71,7 @@ class GrasswaveNode(Node):
         buffer = np.empty(ctx.buffer_size, dtype=np.float32)
         for i in range(ctx.buffer_size):
             current += (target - current) * smoothing_factor
-            buffer[i] = current
+            buffer[i] = max(0.0, min(1.0, current))  # Clamp to [0, 1]
 
         with self._lock:
             self._current_hand_height = current
