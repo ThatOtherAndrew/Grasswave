@@ -17,6 +17,7 @@ __all__ = [
     'SequenceNode',
     'ClockNode',
     'TriggerEnvelopeNode',
+    'FrequencyQuantiseNode',
 ]
 
 
@@ -127,3 +128,14 @@ class TriggerEnvelopeNode(Node):
             # TODO: finish this off and add a more elegant way of handling "overflow" into the next buffer?
 
         self.envelope.write(envelope)
+
+
+class FrequencyQuantiseNode(Node):
+    frequency: StreamInput
+    out: StreamOutput
+
+    def render(self, ctx: RenderContext) -> None:
+        freq = self.frequency.read(ctx)
+        semitone_offset = np.round(np.log2(freq / 440) * 12)
+        quantised_freq = 440 * (2 ** (semitone_offset / 12))
+        self.out.write(quantised_freq.astype(np.float32))
