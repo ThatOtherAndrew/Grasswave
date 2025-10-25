@@ -25,6 +25,7 @@ class GrasswaveNode(Node):
         super().__init__(synchrotron, name)
 
         self.capture = cv2.VideoCapture(0)
+        self.capture.set(cv2.CAP_PROP_FPS, 60)  # Request higher framerate
         self.hands = mp_hands.Hands(
             model_complexity=0,
             max_num_hands=1,
@@ -33,6 +34,7 @@ class GrasswaveNode(Node):
         )
 
         self._current_hand_height = 0.0
+        self._target_hand_height = 0.0
         self._lock = threading.Lock()
         self._running = True
         self._thread = threading.Thread(target=self._capture_loop, daemon=True)
@@ -54,12 +56,26 @@ class GrasswaveNode(Node):
                     hand_height_value = 1.0 - wrist_y
 
             with self._lock:
-                self._current_hand_height = hand_height_value
+                self._target_hand_height = hand_height_value
 
     def render(self, ctx: RenderContext) -> None:
         with self._lock:
-            value = self._current_hand_height
-        self.hand_height.write(np.full(ctx.buffer_size, value, dtype=np.float32))
+            target = self._target_hand_height
+            current = self._current_hand_height
+
+        # Smooth interpolation: adjust this value to control smoothing (0.01 = very smooth, 0.1 = more responsive)
+        smoothing = 0.001
+
+        # Generate interpolated values for each sample in the buffer
+        buffer = np.empty(ctx.buffer_size, dtype=np.float32)
+        for i in range(ctx.buffer_size):
+            current += (target - current) * smoothing
+            buffer[i] = current
+
+        with self._lock:
+            self._current_hand_height = current
+
+        self.hand_height.write(buffer)
 
     def __del__(self):
         self._running = False
