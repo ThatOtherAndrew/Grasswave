@@ -19,6 +19,7 @@ __all__ = ['GrasswaveNode']
 
 
 class GrasswaveNode(Node):
+    smoothing: StreamInput
     hand_height: StreamOutput
 
     def __init__(self, synchrotron: Synchrotron, name: str) -> None:
@@ -63,13 +64,13 @@ class GrasswaveNode(Node):
             target = self._target_hand_height
             current = self._current_hand_height
 
-        # Smooth interpolation: adjust this value to control smoothing (0.01 = very smooth, 0.1 = more responsive)
-        smoothing = 0.001
+        smoothing = self.smoothing.read(ctx, default_constant=1.0)[0]
+        smoothing_factor = 1 / (smoothing * 1000)
 
         # Generate interpolated values for each sample in the buffer
         buffer = np.empty(ctx.buffer_size, dtype=np.float32)
         for i in range(ctx.buffer_size):
-            current += (target - current) * smoothing
+            current += (target - current) * smoothing_factor
             buffer[i] = current
 
         with self._lock:
