@@ -127,12 +127,12 @@ class GrasswaveNode(Node):
                     normalized_distance = avg_distance / hand_width if hand_width > 0 else 0
 
                     # Apply deadzone and scale to [0, 1]
-                    deadzone = 0.35
+                    deadzone = 0.5
                     if normalized_distance < deadzone:
                         pinch_value = 0.0
                     else:
                         # Map from deadzone to ~2.0 (typical max) to [0, 1]
-                        pinch_value = min((normalized_distance - deadzone) / (2.0 - deadzone), 1.0)
+                        pinch_value = min((normalized_distance - deadzone) / (2 * (2.0 - deadzone)), 1.0)
 
             # Display debug values on frame if debug is enabled
             if show_debug and display_frame is not None:
