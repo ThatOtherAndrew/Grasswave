@@ -1,11 +1,11 @@
 [project.urls]
-"Homepage" = "https://synchrotron.thatother.dev"
-"Bug Reports" = "https://github.com/ThatOtherAndrew/Synchrotron/issues"
-"Source" = "https://github.com/ThatOtherAndrew/Synchrotron"
+"Homepage" = "https://github.com/ThatOtherAndrew/Grasswave"
+"Bug Reports" = "https://github.com/ThatOtherAndrew/Grasswave/issues"
+"Source" = "https://github.com/ThatOtherAndrew/Grasswave"
 
 [project]
-name = "synchrotron"
-description = "Graph-based live audio manipulation engine implemented in Python"
+name = "grasswave"
+description = "Play music by touching grass!"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LGPL-3.0-only"
@@ -67,8 +67,8 @@ dev = [
 ]
 
 [project.scripts]
-synchrotron-server = "synchrotron.server.cli:cli"
-synchrotron-console = "synchrotron.console.app:run_app"
+grasswave-server = "synchrotron.server.cli:cli"
+grasswave-console = "synchrotron.console.app:run_app"
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
