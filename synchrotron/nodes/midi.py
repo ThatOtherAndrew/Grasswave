@@ -14,7 +14,7 @@ from . import DataInput, MidiBuffer, MidiInput, MidiMessage, MidiOutput, Node, R
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['MidiInputNode', 'MidiLoopNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode', 'SoundFontNode']
+__all__ = ['MidiInputNode', 'MidiLoopNode', 'MidiHoldNode', 'MidiStrumNode', 'MidiTriggerNode', 'MidiTransposeNode', 'MonophonicRenderNode', 'SoundFontNode']
 
 
 class MidiInputNode(Node):
@@ -120,6 +120,99 @@ class MidiLoopNode(Node):
                 else:
                     # Still recording first loop: just increment
                     self.loop_position += 1
+
+        self.out.write(output)
+
+
+class MidiHoldNode(Node):
+    midi: MidiInput
+    out: MidiOutput
+
+    def render(self, ctx: RenderContext) -> None:
+        output = MidiBuffer(length=ctx.buffer_size)
+
+        for i in range(ctx.buffer_size):
+            for message in self.midi.buffer.get_messages_at_pos(i):
+                opcode = message[0] & MidiMessage.OPCODE_MASK
+
+                # Filter out NOTE_OFF messages and NOTE_ON with velocity 0
+                if opcode == MidiMessage.NOTE_OFF:
+                    continue
+                elif opcode == MidiMessage.NOTE_ON and message[2] == 0:
+                    continue
+
+                # Pass through all other messages
+                output.add_message(position=i, message=message)
+
+        self.out.write(output)
+
+
+class MidiStrumNode(Node):
+    notes: MidiInput
+    strum: StreamInput
+    out: MidiOutput
+
+    def __init__(self, synchrotron: Synchrotron, name: str):
+        super().__init__(synchrotron, name)
+        self.held_notes: set[int] = set()  # Set of pitch classes (0-11)
+        self.previous_strum_value = 0.0
+        self.current_note: int | None = None
+
+    def render(self, ctx: RenderContext) -> None:
+        strum_signal = self.strum.read(ctx)
+        output = MidiBuffer(length=ctx.buffer_size)
+
+        # Process incoming MIDI to update held notes
+        for i in range(ctx.buffer_size):
+            for message in self.notes.buffer.get_messages_at_pos(i):
+                opcode = message[0] & MidiMessage.OPCODE_MASK
+                note = message[1]
+                pitch_class = note % 12
+
+                if opcode == MidiMessage.NOTE_ON and message[2] > 0:  # velocity > 0
+                    self.held_notes.add(pitch_class)
+                elif opcode == MidiMessage.NOTE_OFF or (opcode == MidiMessage.NOTE_ON and message[2] == 0):
+                    self.held_notes.discard(pitch_class)
+
+        # If no notes are held, turn off current note and exit
+        if not self.held_notes:
+            if self.current_note is not None:
+                output.add_message(position=0, message=bytes([MidiMessage.NOTE_OFF, self.current_note, 0]))
+                self.current_note = None
+            self.out.write(output)
+            return
+
+        # Expand held pitch classes to all octaves (0-127)
+        expanded_notes = []
+        for pitch_class in self.held_notes:
+            for octave in range(11):  # MIDI octaves -1 to 9 (notes 0-127)
+                note = pitch_class + (octave * 12)
+                if note <= 127:
+                    expanded_notes.append(note)
+
+        expanded_notes.sort()
+        num_notes = len(expanded_notes)
+
+        # Process each sample in the buffer
+        for i in range(ctx.buffer_size):
+            strum_value = max(0.0, min(1.0, strum_signal[i]))  # Clamp to [0, 1]
+
+            # Determine which segment the strum value falls into
+            segment_index = int(strum_value * num_notes)
+            if segment_index >= num_notes:
+                segment_index = num_notes - 1
+
+            target_note = expanded_notes[segment_index]
+
+            # Check if we've crossed into a new segment
+            if target_note != self.current_note:
+                # Turn off previous note
+                if self.current_note is not None:
+                    output.add_message(position=i, message=bytes([MidiMessage.NOTE_OFF, self.current_note, 0]))
+
+                # Turn on new note
+                output.add_message(position=i, message=bytes([MidiMessage.NOTE_ON, target_note, 64]))
+                self.current_note = target_note
 
         self.out.write(output)
 
