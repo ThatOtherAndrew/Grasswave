@@ -81,11 +81,35 @@ class GrasswaveNode(Node):
                     tilt_angle = np.arctan2(dy, dx)  # Angle of the hand's horizontal axis
                     hand_tilt_value = (tilt_angle / np.pi + 1.0) / 2.0  # Normalize to [0, 1]
 
-                    # Pinch: distance between thumb and index finger tips
-                    pinch_distance = np.sqrt((thumb_tip.x - index_tip.x)**2 +
-                                            (thumb_tip.y - index_tip.y)**2 +
-                                            (thumb_tip.z - index_tip.z)**2)
-                    pinch_value = min(pinch_distance * 5.0, 1.0)  # Scale (1 = apart, 0 = pinched)
+                    # Pinch: average distance from thumb to all fingertips, normalized by hand width
+                    middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+                    ring_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+                    pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
+
+                    # Calculate hand width for normalization
+                    hand_width = np.sqrt((index_mcp.x - pinky_mcp.x)**2 +
+                                        (index_mcp.y - pinky_mcp.y)**2 +
+                                        (index_mcp.z - pinky_mcp.z)**2)
+
+                    # Calculate distances from thumb to each fingertip
+                    distances = []
+                    for finger_tip in [index_tip, middle_tip, ring_tip, pinky_tip]:
+                        dist = np.sqrt((thumb_tip.x - finger_tip.x)**2 +
+                                      (thumb_tip.y - finger_tip.y)**2 +
+                                      (thumb_tip.z - finger_tip.z)**2)
+                        distances.append(dist)
+
+                    # Average and normalize by hand width
+                    avg_distance = np.mean(distances)
+                    normalized_distance = avg_distance / hand_width if hand_width > 0 else 0
+
+                    # Apply deadzone and scale to [0, 1]
+                    deadzone = 0.35
+                    if normalized_distance < deadzone:
+                        pinch_value = 0.0
+                    else:
+                        # Map from deadzone to ~2.0 (typical max) to [0, 1]
+                        pinch_value = min((normalized_distance - deadzone) / (2.0 - deadzone), 1.0)
 
             with self._lock:
                 self._target_hand_height = hand_height_value
