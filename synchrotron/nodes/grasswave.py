@@ -79,7 +79,7 @@ class GrasswaveNode(Node):
                         mp_drawing.draw_landmarks(
                             display_frame,
                             hand_landmarks,
-                            mp_hands.HAND_CONNECTIONS,
+                            list(mp_hands.HAND_CONNECTIONS),
                             mp_drawing_styles.get_default_hand_landmarks_style(),
                             mp_drawing_styles.get_default_hand_connections_style()
                         )
