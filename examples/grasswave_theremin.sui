@@ -1,0 +1,30 @@
+/***
+{"_mxbkn":{"x":-338.7045351312388,"y":121.96280631192437},"_jlhqm":{"x":-303.52501603637086,"y":243.68866913782426},"_ffnnc":{"x":310.85986508868416,"y":236.92805753478433},"_qhohs":{"x":92.51247765942676,"y":-58.24277548310451},"_unouj":{"x":307.70348412617955,"y":-47.33000990215029},"_hvfvw":{"x":-117.46649383984442,"y":246.76830903307808},"_nipqe":{"x":-525.1020967499664,"y":173.792071348102},"_wuqwt":{"x":-523.9983009050757,"y":83.23525289760653},"_aloyp":{"x":-105.72320397218293,"y":38.444801444430155},"_aikbl":{"x":-293.675566589397,"y":-14.950756117278392},"_ynsgs":{"x":-91.84035900613871,"y":-99.3157370647779},"_saykz":{"x":114.95162082440726,"y":243.84902196791302}}
+***/
+
+new GrasswaveNode _mxbkn;
+new SineNode _jlhqm;
+new PlaybackNode _ffnnc;
+new MultiplyNode _qhohs;
+new FrequencyQuantiseNode _unouj;
+new MultiplyNode _hvfvw;
+new True _nipqe;
+new False _wuqwt;
+new AddNode _aloyp;
+new 1 _aikbl;
+new 440 _ynsgs;
+new PanNode _saykz;
+
+link _qhohs.out -> _unouj.frequency;
+link _jlhqm.out -> _hvfvw.b;
+link _mxbkn.hand_pinch -> _hvfvw.a;
+link _mxbkn.hand_height -> _aloyp.b;
+link _aikbl.out -> _aloyp.a;
+link _aloyp.out -> _qhohs.b;
+link _ynsgs.out -> _qhohs.a;
+link _unouj.out -> _jlhqm.frequency;
+link _wuqwt.out -> _mxbkn.debug;
+link _hvfvw.out -> _saykz.signal;
+link _mxbkn.hand_tilt -> _saykz.pan;
+link _saykz.left -> _ffnnc.left;
+link _saykz.right -> _ffnnc.right;
