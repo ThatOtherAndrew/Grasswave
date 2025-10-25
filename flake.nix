@@ -1,5 +1,5 @@
 {
-  description = "Synchrotron - Graph-based live audio manipulation engine implemented in Python";
+  description = "Grasswave";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";

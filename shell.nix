@@ -1,4 +1,4 @@
-{pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {} }:
 
 let
   python = pkgs.python312;
@@ -8,7 +8,7 @@ let
   ];
 in
   pkgs.mkShell {
-    name = "synchrotron";
+    name = "grasswave";
 
     packages = with pkgs; [
       (python.withPackages (pypkgs: with pypkgs; [
