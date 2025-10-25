@@ -21,6 +21,8 @@ __all__ = ['GrasswaveNode']
 class GrasswaveNode(Node):
     smoothing: StreamInput
     hand_height: StreamOutput
+    hand_tilt: StreamOutput
+    hand_pinch: StreamOutput
 
     def __init__(self, synchrotron: Synchrotron, name: str) -> None:
         super().__init__(synchrotron, name)
@@ -36,6 +38,10 @@ class GrasswaveNode(Node):
 
         self._current_hand_height = 0.0
         self._target_hand_height = 0.0
+        self._current_hand_tilt = 0.0
+        self._target_hand_tilt = 0.0
+        self._current_pinch = 0.0
+        self._target_pinch = 0.0
         self._lock = threading.Lock()
         self._running = True
         self._thread = threading.Thread(target=self._capture_loop, daemon=True)
@@ -51,32 +57,75 @@ class GrasswaveNode(Node):
             results = self.hands.process(image)
 
             hand_height_value = 0.0
+            hand_tilt_value = 0.0
+            pinch_value = 0.0
+
             if results.multi_hand_landmarks:
                 for hand_landmarks in results.multi_hand_landmarks:
-                    wrist_y = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].y
-                    hand_height_value = 1.0 - wrist_y
+                    wrist = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
+                    middle_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
+                    thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+                    index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+
+                    # Height: invert y-axis
+                    hand_height_value = 1.0 - wrist.y
+
+                    # Tilt: horizontal angle when hand is flat with fingers pointing at camera
+                    # Use the line from pinky to index knuckles to measure tilt
+                    pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
+                    index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
+
+                    # Calculate horizontal tilt angle
+                    dx = index_mcp.x - pinky_mcp.x
+                    dy = index_mcp.y - pinky_mcp.y
+                    tilt_angle = np.arctan2(dy, dx)  # Angle of the hand's horizontal axis
+                    hand_tilt_value = (tilt_angle / np.pi + 1.0) / 2.0  # Normalize to [0, 1]
+
+                    # Pinch: distance between thumb and index finger tips
+                    pinch_distance = np.sqrt((thumb_tip.x - index_tip.x)**2 +
+                                            (thumb_tip.y - index_tip.y)**2 +
+                                            (thumb_tip.z - index_tip.z)**2)
+                    pinch_value = min(pinch_distance * 5.0, 1.0)  # Scale (1 = apart, 0 = pinched)
 
             with self._lock:
                 self._target_hand_height = hand_height_value
+                self._target_hand_tilt = hand_tilt_value
+                self._target_pinch = pinch_value
 
     def render(self, ctx: RenderContext) -> None:
         with self._lock:
-            target = self._target_hand_height
-            current = self._current_hand_height
+            target_height = self._target_hand_height
+            current_height = self._current_hand_height
+            target_tilt = self._target_hand_tilt
+            current_tilt = self._current_hand_tilt
+            target_pinch = self._target_pinch
+            current_pinch = self._current_pinch
 
         smoothing = self.smoothing.read(ctx, default_constant=1.0)[0]
         smoothing_factor = 1 / (smoothing * 1000)
 
         # Generate interpolated values for each sample in the buffer
-        buffer = np.empty(ctx.buffer_size, dtype=np.float32)
+        height_buffer = np.empty(ctx.buffer_size, dtype=np.float32)
+        tilt_buffer = np.empty(ctx.buffer_size, dtype=np.float32)
+        pinch_buffer = np.empty(ctx.buffer_size, dtype=np.float32)
+
         for i in range(ctx.buffer_size):
-            current += (target - current) * smoothing_factor
-            buffer[i] = max(0.0, min(1.0, current))  # Clamp to [0, 1]
+            current_height += (target_height - current_height) * smoothing_factor
+            current_tilt += (target_tilt - current_tilt) * smoothing_factor
+            current_pinch += (target_pinch - current_pinch) * smoothing_factor
+
+            height_buffer[i] = max(0.0, min(1.0, current_height))
+            tilt_buffer[i] = max(0.0, min(1.0, current_tilt))
+            pinch_buffer[i] = max(0.0, min(1.0, current_pinch))
 
         with self._lock:
-            self._current_hand_height = current
+            self._current_hand_height = current_height
+            self._current_hand_tilt = current_tilt
+            self._current_pinch = current_pinch
 
-        self.hand_height.write(buffer)
+        self.hand_height.write(height_buffer)
+        self.hand_tilt.write(tilt_buffer)
+        self.hand_pinch.write(pinch_buffer)
 
     def __del__(self):
         self._running = False
