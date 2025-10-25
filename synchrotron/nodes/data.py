@@ -60,7 +60,7 @@ class DebugNode(Node):
         if self.input.connection is None:
             return
         buffer = self.input.read()
-        print(buffer)
+        print(buffer[0])
 
 
 class SequenceNode(Node):

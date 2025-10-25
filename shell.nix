@@ -5,6 +5,10 @@ let
   buildInputs = with pkgs; [
     stdenv.cc.cc
     portaudio
+
+    # OpenCV
+    libGL
+    glib
   ];
 in
   pkgs.mkShell {
