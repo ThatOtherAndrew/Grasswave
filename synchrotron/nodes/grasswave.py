@@ -59,6 +59,9 @@ class GrasswaveNode(Node):
             with self._lock:
                 show_debug = self._show_debug
 
+            # Flip frame horizontally for mirror effect
+            frame = cv2.flip(frame, 1)
+
             # Create a copy for display if debug is enabled
             display_frame = frame.copy() if show_debug else None
 
@@ -93,11 +96,13 @@ class GrasswaveNode(Node):
                     pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
                     index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
 
-                    # Calculate horizontal tilt angle
-                    dx = index_mcp.x - pinky_mcp.x
-                    dy = index_mcp.y - pinky_mcp.y
+                    # Calculate horizontal tilt angle (flipped for mirrored camera)
+                    dx = pinky_mcp.x - index_mcp.x  # Swapped to account for horizontal flip
+                    dy = pinky_mcp.y - index_mcp.y
                     tilt_angle = np.arctan2(dy, dx)  # Angle of the hand's horizontal axis
                     hand_tilt_value = (tilt_angle / np.pi + 1.0) / 2.0  # Normalize to [0, 1]
+                    hand_tilt_value = (hand_tilt_value - 0.5) * 4.0  # Center and scale to [-1, 1]
+                    hand_tilt_value = max(-1.0, min(1.0, hand_tilt_value - 0.1))  # Offset and clamp
 
                     # Pinch: average distance from thumb to all fingertips, normalized by hand width
                     middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
@@ -181,7 +186,7 @@ class GrasswaveNode(Node):
             current_pinch += (target_pinch - current_pinch) * smoothing_factor
 
             height_buffer[i] = max(0.0, min(1.0, current_height))
-            tilt_buffer[i] = max(0.0, min(1.0, current_tilt))
+            tilt_buffer[i] = max(-1.0, min(1.0, current_tilt))
             pinch_buffer[i] = max(0.0, min(1.0, current_pinch))
 
         with self._lock:
