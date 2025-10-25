@@ -1,0 +1,37 @@
+/***
+{"_mxbkn":{"x":-374.52020875289935,"y":389.49227267383293},"_ffnnc":{"x":653.3456027064071,"y":181.5210492279244},"_nipqe":{"x":-569.745115997529,"y":415.57824079752464},"_wuqwt":{"x":-564.4079845416502,"y":336.444790816782},"_hsnle":{"x":-134.43710807213387,"y":344.52023257667116},"_zhsla":{"x":261.58094639572226,"y":325.194745751833},"_iytab":{"x":-602.4427328346341,"y":143.1094696995949},"port":{"x":-776.6660277960424,"y":142.0182089587671},"_rwkzk":{"x":56.77205522876311,"y":343.3357625739483},"_gxivg":{"x":74.70386740098994,"y":269.44673462673956},"_mjvln":{"x":85.075222579013,"y":396.4670566788956},"_davzh":{"x":494.55535159330856,"y":227.4308883070283},"_pumux":{"x":497.1266551849053,"y":164.4339503129087},"_vjfqr":{"x":255.84470736387385,"y":165.84908165798856},"organ":{"x":80.99606313529674,"y":204.41863553193943}}
+***/
+
+new GrasswaveNode _mxbkn;
+new PlaybackNode _ffnnc;
+new True _nipqe;
+new False _wuqwt;
+new MidiStrumNode _hsnle;
+new SoundFontNode _zhsla;
+new MidiInputNode _iytab;
+new 1 port;
+new MidiHoldNode _rwkzk;
+new "SM64.sf2" _gxivg;
+new 10 _mjvln;
+new AddNode _davzh;
+new AddNode _pumux;
+new SoundFontNode _vjfqr;
+new 19 organ;
+
+link _mxbkn.hand_height -> _hsnle.strum;
+link port.out -> _iytab.port;
+link _iytab.out -> _hsnle.notes;
+link _hsnle.out -> _rwkzk.midi;
+link _rwkzk.out -> _zhsla.midi;
+link _gxivg.out -> _zhsla.path;
+link _mjvln.out -> _zhsla.preset;
+link _pumux.out -> _ffnnc.left;
+link _davzh.out -> _ffnnc.right;
+link _zhsla.left -> _pumux.b;
+link _zhsla.right -> _davzh.b;
+link _iytab.out -> _vjfqr.midi;
+link _vjfqr.left -> _pumux.a;
+link _vjfqr.right -> _davzh.a;
+link _gxivg.out -> _vjfqr.path;
+link organ.out -> _vjfqr.preset;
+link _wuqwt.out -> _mxbkn.debug;
