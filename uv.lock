@@ -431,6 +431,56 @@ wheels = [
 ]
 
 [[package]]
+name = "grasswave"
+source = { editable = "." }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "fastapi" },
+    { name = "lark" },
+    { name = "mingus" },
+    { name = "numpy" },
+    { name = "pyaudio" },
+    { name = "python-rtmidi" },
+    { name = "soundfile" },
+    { name = "textual" },
+    { name = "tinysoundfont" },
+    { name = "typer" },
+    { name = "uvicorn" },
+    { name = "websocket" },
+    { name = "websocket-client" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "mkdocs-material" },
+    { name = "textual-dev" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aiohttp", specifier = ">=3.12.13" },
+    { name = "fastapi", specifier = ">=0.115.13" },
+    { name = "lark", specifier = ">=1.2.2" },
+    { name = "mingus", specifier = ">=0.6.1" },
+    { name = "numpy", specifier = ">=2.3.1" },
+    { name = "pyaudio", specifier = ">=0.2.14" },
+    { name = "python-rtmidi", specifier = ">=1.5.8" },
+    { name = "soundfile", specifier = ">=0.13.1" },
+    { name = "textual", specifier = ">=3.5.0" },
+    { name = "tinysoundfont", specifier = ">=0.3.7" },
+    { name = "typer", specifier = ">=0.16.0" },
+    { name = "uvicorn", specifier = ">=0.34.3" },
+    { name = "websocket", specifier = ">=0.2.1" },
+    { name = "websocket-client", specifier = ">=1.8.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mkdocs-material", specifier = ">=9.6.14" },
+    { name = "textual-dev", specifier = ">=1.7.0" },
+]
+
+[[package]]
 name = "greenlet"
 version = "3.2.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1292,56 +1342,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ce/20/08dfcd9c983f6a6f4a1000d934b9e6d626cff8d2eeb77a89a68eef20a2b7/starlette-0.46.2.tar.gz", hash = "sha256:7f7361f34eed179294600af672f565727419830b54b7b084efe44bb82d2fccd5", size = 2580846, upload-time = "2025-04-13T13:56:17.942Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8b/0c/9d30a4ebeb6db2b25a841afbb80f6ef9a854fc3b41be131d249a977b4959/starlette-0.46.2-py3-none-any.whl", hash = "sha256:595633ce89f8ffa71a015caed34a5b2dc1c0cdb3f0f1fbd1e69339cf2abeec35", size = 72037, upload-time = "2025-04-13T13:56:16.21Z" },
-]
-
-[[package]]
-name = "synchrotron"
-source = { editable = "." }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "fastapi" },
-    { name = "lark" },
-    { name = "mingus" },
-    { name = "numpy" },
-    { name = "pyaudio" },
-    { name = "python-rtmidi" },
-    { name = "soundfile" },
-    { name = "textual" },
-    { name = "tinysoundfont" },
-    { name = "typer" },
-    { name = "uvicorn" },
-    { name = "websocket" },
-    { name = "websocket-client" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "mkdocs-material" },
-    { name = "textual-dev" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aiohttp", specifier = ">=3.12.13" },
-    { name = "fastapi", specifier = ">=0.115.13" },
-    { name = "lark", specifier = ">=1.2.2" },
-    { name = "mingus", specifier = ">=0.6.1" },
-    { name = "numpy", specifier = ">=2.3.1" },
-    { name = "pyaudio", specifier = ">=0.2.14" },
-    { name = "python-rtmidi", specifier = ">=1.5.8" },
-    { name = "soundfile", specifier = ">=0.13.1" },
-    { name = "textual", specifier = ">=3.5.0" },
-    { name = "tinysoundfont", specifier = ">=0.3.7" },
-    { name = "typer", specifier = ">=0.16.0" },
-    { name = "uvicorn", specifier = ">=0.34.3" },
-    { name = "websocket", specifier = ">=0.2.1" },
-    { name = "websocket-client", specifier = ">=1.8.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mkdocs-material", specifier = ">=9.6.14" },
-    { name = "textual-dev", specifier = ">=1.7.0" },
 ]
 
 [[package]]
