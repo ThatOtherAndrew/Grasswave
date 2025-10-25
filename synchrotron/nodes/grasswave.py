@@ -2,6 +2,7 @@ from __future__ import annotations
 from _socket import CAPI
 
 from typing import TYPE_CHECKING
+import threading
 
 import cv2
 import mediapipe.python.solutions.hands as mp_hands
@@ -31,20 +32,38 @@ class GrasswaveNode(Node):
             min_tracking_confidence=0.5,
         )
 
+        self._current_hand_height = 0.0
+        self._lock = threading.Lock()
+        self._running = True
+        self._thread = threading.Thread(target=self._capture_loop, daemon=True)
+        self._thread.start()
+
+    def _capture_loop(self):
+        while self._running:
+            success, frame = self.capture.read()
+            if not success:
+                continue
+
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            results = self.hands.process(image)
+
+            hand_height_value = 0.0
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    wrist_y = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].y
+                    hand_height_value = 1.0 - wrist_y
+
+            with self._lock:
+                self._current_hand_height = hand_height_value
+
     def render(self, ctx: RenderContext) -> None:
-        success, frame = self.capture.read()
-        if not success:
-            self.hand_height.write(np.zeros(ctx.buffer_size, dtype=np.float32))
-            return
+        with self._lock:
+            value = self._current_hand_height
+        self.hand_height.write(np.full(ctx.buffer_size, value, dtype=np.float32))
 
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.hands.process(image)
-
-        hand_height_value = 0.0
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                # Get the y-coordinate of the wrist (landmark 0)
-                wrist_y = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST].y
-                hand_height_value = 1.0 - wrist_y  # Invert y-axis for height
-
-        self.hand_height.write(np.full(ctx.buffer_size, hand_height_value, dtype=np.float32))
+    def __del__(self):
+        self._running = False
+        if hasattr(self, '_thread'):
+            self._thread.join(timeout=1.0)
+        if hasattr(self, 'capture'):
+            self.capture.release()
