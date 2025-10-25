@@ -10,7 +10,7 @@ import mediapipe.python.solutions.drawing_utils as mp_drawing
 import mediapipe.python.solutions.drawing_styles as mp_drawing_styles
 import numpy as np
 
-from . import Node, RenderContext, StreamInput, StreamOutput
+from . import Node, RenderContext, StreamInput, StreamOutput, DataInput
 
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
@@ -20,6 +20,7 @@ __all__ = ['GrasswaveNode']
 
 class GrasswaveNode(Node):
     smoothing: StreamInput
+    debug: DataInput
     hand_height: StreamOutput
     hand_tilt: StreamOutput
     hand_pinch: StreamOutput
@@ -42,6 +43,8 @@ class GrasswaveNode(Node):
         self._target_hand_tilt = 0.0
         self._current_pinch = 0.0
         self._target_pinch = 0.0
+        self._show_debug = False
+        self._debug_window_open = False
         self._lock = threading.Lock()
         self._running = True
         self._thread = threading.Thread(target=self._capture_loop, daemon=True)
@@ -53,6 +56,12 @@ class GrasswaveNode(Node):
             if not success:
                 continue
 
+            with self._lock:
+                show_debug = self._show_debug
+
+            # Create a copy for display if debug is enabled
+            display_frame = frame.copy() if show_debug else None
+
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = self.hands.process(image)
 
@@ -62,6 +71,15 @@ class GrasswaveNode(Node):
 
             if results.multi_hand_landmarks:
                 for hand_landmarks in results.multi_hand_landmarks:
+                    # Draw hand landmarks on display frame if debug is enabled
+                    if show_debug and display_frame is not None:
+                        mp_drawing.draw_landmarks(
+                            display_frame,
+                            hand_landmarks,
+                            mp_hands.HAND_CONNECTIONS,
+                            mp_drawing_styles.get_default_hand_landmarks_style(),
+                            mp_drawing_styles.get_default_hand_connections_style()
+                        )
                     wrist = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
                     middle_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
                     thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
@@ -111,13 +129,37 @@ class GrasswaveNode(Node):
                         # Map from deadzone to ~2.0 (typical max) to [0, 1]
                         pinch_value = min((normalized_distance - deadzone) / (2.0 - deadzone), 1.0)
 
+            # Display debug values on frame if debug is enabled
+            if show_debug and display_frame is not None:
+                cv2.putText(display_frame, f"Height: {hand_height_value:.2f}", (10, 30),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv2.putText(display_frame, f"Tilt: {hand_tilt_value:.2f}", (10, 60),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv2.putText(display_frame, f"Pinch: {pinch_value:.2f}", (10, 90),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+                # Show the debug window
+                cv2.imshow('Grasswave Debug', display_frame)
+                self._debug_window_open = True
+            elif self._debug_window_open:
+                # Hide the debug window if debug is disabled and window was open
+                cv2.destroyWindow('Grasswave Debug')
+                self._debug_window_open = False
+
+            cv2.waitKey(1)
+
             with self._lock:
                 self._target_hand_height = hand_height_value
                 self._target_hand_tilt = hand_tilt_value
                 self._target_pinch = pinch_value
 
     def render(self, ctx: RenderContext) -> None:
+        # Update debug state
+        debug_value = self.debug.read(default=False)
+        debug_enabled = bool(debug_value)
+
         with self._lock:
+            self._show_debug = debug_enabled
             target_height = self._target_hand_height
             current_height = self._current_hand_height
             target_tilt = self._target_hand_tilt
@@ -157,3 +199,4 @@ class GrasswaveNode(Node):
             self._thread.join(timeout=1.0)
         if hasattr(self, 'capture'):
             self.capture.release()
+        cv2.destroyAllWindows()
