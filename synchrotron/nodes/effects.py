@@ -9,7 +9,24 @@ from . import Node, RenderContext, StreamInput, StreamOutput
 if TYPE_CHECKING:
     from synchrotron.synchrotron import Synchrotron
 
-__all__ = ['BitcrushNode']
+__all__ = ['PanNode', 'BitcrushNode']
+
+
+class PanNode(Node):
+    signal: StreamInput
+    pan: StreamInput
+    left: StreamOutput
+    right: StreamOutput
+
+    def render(self, ctx: RenderContext) -> None:
+        signal = self.signal.read(ctx)
+        pan = self.pan.read(ctx, default_constant=0.0)
+
+        left_gain = np.cos((pan + 1) * (np.pi / 4))
+        right_gain = np.sin((pan + 1) * (np.pi / 4))
+
+        self.left.write(signal * left_gain)
+        self.right.write(signal * right_gain)
 
 
 class BitcrushNode(Node):
