@@ -1,6 +1,6 @@
 # Grasswave
 
-Play music by touching grass!
+Hand gesture controls for Synchrotron
 
 ---
 

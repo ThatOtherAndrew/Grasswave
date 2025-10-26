@@ -5,7 +5,7 @@
 
 [project]
 name = "grasswave"
-description = "Play music by touching grass!"
+description = "Hand gesture controls for Synchrotron"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LGPL-3.0-only"
