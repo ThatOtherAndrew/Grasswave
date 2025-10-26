@@ -12,7 +12,7 @@ Currently, two example presets are provided - [grasswave_theremin.sui](/examples
 
 ## Demo video
 
-![Grasswave demo video](/assets/grasswave_demo.mp4)
+[![Grasswave demo video](/assets/grasswave_demo.mp4)](https://github.com/user-attachments/assets/aac9d314-6757-4784-ae19-a9bb14484a53)
 
 ## Why is this a fork?
 
